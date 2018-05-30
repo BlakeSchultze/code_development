@@ -1,0 +1,49 @@
+extern std::string color_encoding_statement(const char*, const char*, const char* );
+//extern template<typename T> std::string echo_cmd(T, const char*, const char*, const char* );
+extern std::string change_text_color_cmd(const char*, const char*, const char*, bool);
+extern void change_text_color(const char*, const char*, const char*, bool);
+//extern template<typename T> std::string colored_text(T, const char*, const char*, const char* );
+//extern template<typename T> std::string echo_statement(T, const char*, const char*, const char* );
+//extern template<typename T> void print_colored_text(T, const char*, const char*, const char* );
+extern void print_section_separator(const char, const char*, const char*, const char* );
+extern void print_section_header( const char*, const char, const char*, const char*, const char*, const char* );
+extern void print_section_exit( const char*, const char*, const char*, const char*, const char*, const char* );
+//extern template<typename T> void print_labeled_value(const char*, T, const char*, const char*, const char*, const char* );
+extern void print_multiline_bash_results(const char*, const char*, const char*, const char* );
+
+template<typename T> std::string colored_text(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
+{
+	//char color_command[256];
+	//sprintf_s(color_command, "%s%s%s", color_encoding.c_str(), statement.c_str(), CLOSE_COLOR_ESCAPE_SEQ );
+	//std::string statement_str(color_command);
+	//return statement_str;
+	//return std::string(color_command);
+	//std::string out_statement = color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ);
+	//return out_statement;	
+	std::string color_encoding = color_encoding_statement(text_color_code, background_color_code, underlining_coding );
+	return std::string(color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ));
+}
+template<typename T> std::string echo_statement(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
+{
+	//char color_command[512];
+	//std::string color_encoding = color_encoding_statement(text_color_code, background_color_code, underlining_coding );
+	//sprintf_s(color_command, "%s%s%s", color_encoding.c_str(), std::string(statement).c_str(), CLOSE_COLOR_ESCAPE_SEQ);
+	//return echo_cmd(color_command, text_color_code, background_color_code, underlining_coding );
+	//std::string in_statement = color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ);
+	//return echo_cmd(in_statement, text_color_code, background_color_code, underlining_coding );	
+	std::string in_statement = colored_text(statement, text_color_code, background_color_code, underlining_coding );
+	return echo_cmd(in_statement);
+}
+template<typename T> void print_colored_text(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
+{
+	std::string echo_command = echo_statement<T>(statement, text_color_code, background_color_code, underlining_coding );
+	system(echo_command.c_str());
+}
+template<typename T> void print_labeled_value(const char* statement, T value, const char* statement_color_code, const char* value_color_code, const char* background_color_code, const char* underlining_coding )
+{
+	std::stringstream value_string;
+	value_string << value;
+	std::string value_string_colored = colored_text(value_string.str(), value_color_code, background_color_code, underlining_coding );	
+	std::string out_string_colored = std::string(statement) + value_string_colored;	
+	print_colored_text(out_string_colored, statement_color_code, background_color_code, underlining_coding );			
+}
