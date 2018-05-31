@@ -12,6 +12,10 @@ extern BLOCK_ORDERING block_order;
 extern std::vector<UINT> DROP_block_sizes;
 extern std::vector<UINT> DROP_block_order;
 extern std::vector<UINT> DROP_block_start_positions;
+
+extern UINT k, ELL, N, K;
+
+
 extern const char BASH_ECHO_CMD[];											// Command to secure copy data/directories between clusters/nodes
 extern const char WIN_ECHO_CMD[];											// Command to secure copy data/directories between clusters/nodes
 extern char print_statement[512];
@@ -111,6 +115,15 @@ extern char system_command[512];
 #define FLOAT_FORMAT			"%6.6lf"								// [string] Specifies format to use for writing/printing floating point data using {s/sn/f/v/vn}printf statements
 #define STRING_FORMAT			"%s"									// [string] Specifies format to use for writing/printing strings data using {s/sn/f/v/vn}printf statements
 
+#define ON						(0==0)									// [T/F] Definition of boolean "ON" as equivalent to 'true'
+#define OFF						(!ON)									// [T/F] Definition of boolean "OFF" as equivalent to 'false' (technically 'not true')
+#define START					true									// [T/F] Used as an alias for true for starting timer
+#define STOP					false									// [T/F] Used as an alias for false for stopping timer
+#define SAMP_PROC				ON
+#define SAMP_PROC2				OFF
+extern const bool SAMP_PROC3;
+
+
 #ifndef ITEMTOOL_H  // Prevent duplicate definition
 #define ITEMTOOL_H
 	template<typename T> std::string echo_cmd(T);
@@ -121,8 +134,25 @@ extern char system_command[512];
 	#include "..//src//pCT_development.tem"  // Include the implementation 
 #endif
 
-extern int LCDshield_num_sublevels(int[][4][3][7], int*, int);
+extern const bool preprocessing_test;
+extern const bool pCT_general_test;
+extern const bool pCT_stringops_test;
+extern const bool pCT_printing_test;
+extern const bool TVS_beta_sequence_test;
+extern const bool TVS_ell_assign_test;
+extern const bool block_ordering_test;
+extern const bool slice_merging_test;
+
 extern void exit_program();
 extern void exit_program_if( bool early_exit);
 extern void exit_program_if( char* exit_statement, char continue_character);
 extern bool exit_prompt( char* exit_statement, char continue_character);
+extern void preprocessing_testing(bool);
+extern void pCT_general_testing(bool);
+extern void pCT_stringops_testing(bool);
+extern void pCT_printing_testing(bool);
+extern void TVS_beta_sequence_testing(bool);
+extern void TVS_ell_assign_testing(bool);
+extern void block_ordering_testing(bool);
+extern void slice_merging_testing(bool);
+extern void pCT_development(bool);

@@ -40,3 +40,8 @@ using std::endl;
 typedef unsigned long long ULL;
 typedef unsigned int UINT;
 typedef std::vector<UINT>::iterator block_iterator;
+
+#define ON						(0==0)									// [T/F] Definition of boolean "ON" as equivalent to 'true'
+#define OFF						(!ON)									// [T/F] Definition of boolean "OFF" as equivalent to 'false' (technically 'not true')
+#define START					true									// [T/F] Used as an alias for true for starting timer
+#define STOP					false									// [T/F] Used as an alias for false for stopping timer

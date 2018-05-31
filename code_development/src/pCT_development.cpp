@@ -13,8 +13,11 @@ std::vector<UINT> DROP_block_sizes;
 std::vector<UINT> DROP_block_order;
 std::vector<UINT> DROP_block_start_positions;
 
+UINT k = 4, ELL = 10, N = 5, K = 12;
+
 const char BASH_ECHO_CMD[]			= "echo -e";											// Command to secure copy data/directories between clusters/nodes
 const char WIN_ECHO_CMD[]			= "echo";											// Command to secure copy data/directories between clusters/nodes
+const bool SAMP_PROC3= true;
 char print_statement[512];
 char system_command[512];
 
@@ -600,9 +603,162 @@ void print_multiline_bash_results(const char* command, const char* text_color_co
 	//sprintf_s(system_command, "OIFS=$IFS; IFS=$'\\n'; for i in $(%s); do %s; done; IFS=$OIFS", command, echo_command.c_str());
 	//system(system_command);
 }
-int LCDshield_num_sublevels(int menu_levels[][4][3][7], int* path, int new_level) 
+
+void preprocessing_testing(bool on){if(on)
 {
-    //int num_sublevels = menu_levels[path[0]][path[1]][path[2]][path[3]];
-    //return num_sublevels;
-    return menu_levels[path[0]][path[1]][path[2]][path[3]];
-}
+	size_t file_size = 11379018252;
+	ULL file_size2 = 11379018252;
+	float fileFraction = 1.0;
+	size_t sizeToUse = int(fileFraction*float(file_size));
+	size_t sizeToUse2 = static_cast<size_t>(fileFraction*file_size);
+	unsigned long long sizeToUse3 = static_cast<unsigned long long>(fileFraction*file_size2);
+	size_t sizeToUse4 = fileFraction*file_size;
+	cout << file_size << " " << static_cast<int>(file_size) << endl;
+	cout << file_size2 << endl;
+	cout << sizeToUse << endl;
+	cout << sizeToUse2 << endl;
+	cout << sizeToUse3 << endl;
+	cout << sizeToUse4 << endl;
+	cout << (static_cast<size_t>(fileFraction*file_size2)) << endl;
+	printf("file_size = %Iu\n", (unsigned long)file_size);
+	printf("file_size2 = %lu\n", file_size2);
+	printf("fileFraction = %f\n", fileFraction);
+	printf("sizeToUse = %ld\n", sizeToUse);
+	printf("sizeToUse2 = %zu\n", sizeToUse2);
+
+}}
+void pCT_general_testing(bool on){if(on)
+{
+	//tuple_mapping();
+	int num = 2;
+	int num2 = 3;
+	double roottwo = sqrt(num^2 + num2^2);
+	unsigned int roottwoint = static_cast<unsigned int>(sqrt(num^2 + num2^2));
+	printf("roottwo = %6.6lf\n", roottwo );
+	printf("roottwoint = %d\n", roottwoint );
+
+	int t = 4;
+	int* t_point = &t;
+	cout << (*t_point) << endl;
+	t--;
+	cout << (*t_point) << endl;
+}}
+void pCT_stringops_testing(bool on){if(on)
+{
+	//char FBP_FILTER_CSTRING[32];
+	//char HULL_FILTER_CSTRING[32];
+	//char X_0_FILTER_CSTRING[32];	
+		//set_procedure_on_off_string(SAMP_PROC, FBP_FILTER_CSTRING);
+		//set_procedure_on_off_string(SAMP_PROC3, HULL_FILTER_CSTRING);
+		//printf("%s\n", FBP_FILTER_CSTRING);
+		//printf("%s\n", HULL_FILTER_CSTRING);
+		std::string FBP_FILTER_STRING= set_procedure_on_off_string(SAMP_PROC3);
+		std::string HULL_FILTER_STRING= set_procedure_on_off_string(SAMP_PROC2);
+		cout << FBP_FILTER_STRING << endl;
+		cout << HULL_FILTER_STRING << endl;
+		if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+			exit_program();	
+}}
+void pCT_printing_testing(bool on){if(on)
+{
+	//print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	//echo_statement<const char*>("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	//echo_statement<std::string>(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	//echo_statement("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	//echo_statement(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	cout<< "colorless hello " << endl;
+	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	print_colored_text(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	sprintf_s( print_statement, "Performing testing of functions currently in development");
+	print_section_header( print_statement, MAJOR_SECTION_SEPARATOR, RED_TEXT, RED_TEXT, WHITE_BACKGROUND, DONT_UNDERLINE_TEXT );
+	print_section_exit( "Finished input data verification", SECTION_EXIT_CSTRING, RED_TEXT, RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );	
+	int x = 4;
+	//std::string num(x);
+	print_labeled_value("COLUMNS =", 200, GREEN_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_labeled_value("COLUMNS =", 3.5698, RED_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_labeled_value("COLUMNS =", "clm", BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_labeled_value("COLUMNS =", 'a', BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_multiline_bash_results("dir /b", LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);
+	//exit_program();		
+	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, true);
+	//return;
+	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+}}
+void TVS_beta_sequence_testing(bool on){if(on)
+{
+	/*
+	int TVS_ETA_SEQUENCE_LENGTH = log(TVS_MIN_ETA)/log(ALPHA);
+	printf("TVS_ETA_SEQUENCE_LENGTH = %d\n", TVS_ETA_SEQUENCE_LENGTH );
+	float* TVS_eta_sequence_h = (float*)calloc( TVS_ETA_SEQUENCE_LENGTH - ELL_0 + 1, sizeof(float));
+	for( int exponent = ELL_0, element = 0; exponent < TVS_ETA_SEQUENCE_LENGTH; exponent++, element++ )
+		TVS_eta_sequence_h[element] = powf(ALPHA, exponent);
+	for( int exponent = ELL_0, element = 0; exponent < TVS_ETA_SEQUENCE_LENGTH; exponent++, element++ )
+		printf("TVS_eta_sequence_h[%d]  = %6.12lf\n", element, TVS_eta_sequence_h[element]  );
+	*/
+	//TVS_BETA_SEQUENCE_LENGTH = log(TVS_MIN_BETA)/log(ALPHA);
+	unsigned int TVS_BETA_SEQUENCE_LENGTH = ELL_0 + 1 + N * K;
+	float* TVS_beta_sequence_h = (float*)calloc( TVS_BETA_SEQUENCE_LENGTH, sizeof(float));
+	for( int exponent = 0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
+		TVS_beta_sequence_h[exponent] = powf(ALPHA, exponent);
+	for( int exponent = ELL_0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
+		printf("TVS_beta_sequence_h[%d]  = %6.12lf\n", exponent, TVS_beta_sequence_h[exponent]  );
+
+	printf("TVS_beta_sequence_h[%d]  = %6.12lf\n", ELL, TVS_beta_sequence_h[ELL]  );
+
+}}
+void TVS_ell_assign_testing(bool on){if(on)
+{
+	//int k = 4, ELL = 10, N = 5, K = 12;
+	k = 4, ELL = 10, N = 5, K = 12;
+
+	//ELL = randi(k-1, ELL);										// Randomly choose integer in [k,ELL] using default engine, resulting in a larger perturbation factor
+	//printf("ELL = %d\n", ELL );
+	
+	int min = ELL, max = k;
+	    if( ELL > k )
+        {
+        	min = k;
+		max = ELL;
+	}
+	for(int i = 0; i < 10; i++)
+		{
+			ELL = min + ( rand() % static_cast<int>( max - min + 1 ) );                       // Randomly choose integer in [k,ELL] using specified engine, resulting in a larger perturbation factor
+		printf(" = %d %d\n", max,min  );
+		printf(" = %d\n",rand()  );
+		printf(" = %d\n",static_cast<int>( max - min + 1 ) );
+		printf(" = %d\n", rand() % static_cast<int>( max - min + 1 ) );
+		printf("ELL = %d\n", ELL );
+	}
+	if( min == 0) cout << 0 << endl;
+	else if ( min == 1) cout << 1 << endl;
+	else if ( min == 2) cout << 2 << endl;
+	else if ( min == 3) cout << 33 << endl;
+	else if ( min == 4) cout << 4 << endl;
+	else puts("WRONG MODE");
+}}
+void block_ordering_testing(bool on){if(on)
+{
+	recon_DROP_initializations();
+	BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
+	cout << ( block_order == ROTATE_LEFT) << endl;
+}}
+void slice_merging_testing(bool on){if(on)
+{
+	int iterations = 12, slices = 20, columns = 200, rows = 200;
+	char basename[] = "x_";
+	char bdir[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\";
+	//combine_set_x_n_slices( filename_base, directory, iterations, x_max, y_max, z_max );
+	combine_set_x_n_slices<float>( basename, bdir, iterations, columns, rows, slices, false );
+}}
+void pCT_development(bool on){if(on)
+{
+	pCT_printing_testing(pCT_printing_test);
+	//preprocessing_testing(preprocessing_test);
+	//TVS_beta_sequence_testing(TVS_beta_sequence_test);
+	//TVS_ell_assign_testing(TVS_ell_assign_test);
+	//block_ordering_testing(block_ordering_test);
+	//slice_merging_testing(slice_merging_test);
+	//pCT_general_testing(pCT_general_test);
+	//pCT_stringops_testing(pCT_stringops_test);	
+}}

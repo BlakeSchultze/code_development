@@ -597,3 +597,28 @@ bool is_prime_Bernstein()
 	//if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
 		//break;
 }
+void AKS_development(bool on){if(on)
+{
+		// AKS
+	// n=11701, r=11699, q=5849, s=2923
+	// n=1000000007, r=57287, q=28643, s=14311
+	//
+	// Bernstein
+	// n=349, r=347, q=173, s=140
+	// n=1000000007, r=3623, q=1811, s=1785
+		bool prime_test_result = false;
+		unsigned int n0;
+		while(true)
+		{
+			//cout << "n ? ";
+			//cin >> n0;
+	
+			//unsigned int n = n0;
+			prime_test_result = is_prime_Bernstein();
+			printf("prime_test_result = %d\n", prime_test_result);
+			//exit_program_if( true);
+			//exit_program_if( "Enter 'c' to continue execution, any other character exits program", 'c');
+			if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+				break;
+		}
+}}
