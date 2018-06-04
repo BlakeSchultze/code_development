@@ -1,26 +1,23 @@
-//#pragma once
 #include "../include/pCT_development.h"
-//#include "code_development.h"
 
 UINT DROP_BLOCK_SIZE = 3200;
 UINT reconstruction_histories , DROP_last_block_size, num_DROP_blocks;
 const BLOCK_ORDERING		DROP_BLOCK_ORDER		= CYCLIC;
 BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
 //BLOCK_ORDERING block_order	= BLOCK_ORDERING{0};
-//BLOCK_ORDERING block_order	= BLOCK_ORDERING[0];
-	
+//BLOCK_ORDERING block_order	= BLOCK_ORDERING[0];	
 std::vector<UINT> DROP_block_sizes;
 std::vector<UINT> DROP_block_order;
 std::vector<UINT> DROP_block_start_positions;
-
 UINT k = 4, ELL = 10, N = 5, K = 12;
-
 const char BASH_ECHO_CMD[]			= "echo -e";											// Command to secure copy data/directories between clusters/nodes
 const char WIN_ECHO_CMD[]			= "echo";											// Command to secure copy data/directories between clusters/nodes
 const bool SAMP_PROC3= true;
 char print_statement[512];
 char system_command[512];
-
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 void exit_program()
 {	
 	char user_response[20];
@@ -69,6 +66,9 @@ bool exit_prompt( char* exit_statement, char continue_character)
 		//	exit(1);
 	return false;
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 void generate_history_sequence(ULL N, ULL offset_prime, ULL* sequence )
 {
     sequence = (ULL*) calloc( N, sizeof(ULL));
@@ -274,6 +274,9 @@ void recon_DROP_initializations()
 	//}
 
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 template<typename T> void vector_2_disk( const char* filename_base, const char* directory, const char* folder, std::vector<T> data, const int x_max, const int y_max, const int z_max, const bool single_file )
 {
 	char filename[256];
@@ -318,7 +321,6 @@ template<typename T> void vector_2_disk( const char* filename_base, const char* 
 		output_file.close();
 	}
 }
-
 std::string set_procedure_on_off_string(const bool procedure_on)
 {
 		
@@ -348,36 +350,30 @@ int randi(int min_value, int max_value)
 	std::default_random_engine generator(seed);
 	return distribution(generator);
 }
-//int LCDshield_num_sublevels(int[][4][3][7], int*, int );
 template<typename T> void combine_x_slices( const char* filename_base, const char* directory, const char* folder, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
 	char			filename[256];
-	std::ifstream	input_file;
-	std::vector<T>	data;
 	sprintf_s(filename, "%s%s%s.txt", directory, folder, filename_base);
-	std::ifstream	outfile(filename);
-	if(outfile.fail() || overwrite)
+	T value;
+	std::vector<T>	data;
+	std::string		line;
+	std::ifstream	input_file;
+	std::fstream	outfile(filename, std::ofstream::out);
+	if(outfile.fail() || overwrite  )//|| ( outfile.seekg (0, outfile.end) == 0 )
 	{
-		cout << "Combining file: " << filename << endl;
+		cout << "Combining file: " << filename << endl;// "\n\t of size " << outfile.seekg (0, outfile.end) << endl;
 		for( int i = 0; i < z_max; i++)
 		{
 			sprintf_s(filename, "%s%s%s_%d.txt", directory, folder, filename_base, i);
 			std::ifstream	file(filename);
-			std::string		line;
-				//File does not exist code here
-				// Read one line at a time into the variable line:
-				while(std::getline(file, line))
-				{
-					std::vector<int>   lineData;
-					std::stringstream  lineStream(line);
-					T value;
-					// Read an integer at a time from the line
-					while(lineStream >> value)
-					{
-						// Add the integers from a line to a 1D array (vector)
-						data.push_back(value);
-					}
-				}
+			//std::string		line;
+			while(std::getline(file, line))	// Read one line at a time into the variable line:
+			{
+				std::stringstream  lineStream(line);
+				//T value;
+				while(lineStream >> value)
+					data.push_back(value);
+			}
 			file.close();
 		}
 	}
@@ -385,13 +381,33 @@ template<typename T> void combine_x_slices( const char* filename_base, const cha
 		cout << "File exists and overwriting is off" << endl;
 	vector_2_disk( filename_base, directory, folder, data, x_max, y_max, z_max, true);
 }
+template<typename T> void concat_x_slices( const char* filename_base, const char* directory, const char* folder, const int x_max, const int y_max, const int z_max, bool overwrite )
+{
+	char filename[256];
+	sprintf_s(filename, "%s%s%s.txt", directory, folder, filename_base);
+	std::ofstream	outfile(filename, std::ofstream::out);
+	if(outfile.fail() || overwrite  )//|| ( outfile.seekg (0, outfile.end) == 0 )
+	{
+		cout << "Combining file: " << filename << endl;// "\n\t of size " << outfile.seekg (0, outfile.end) << endl;
+		for( int i = 0; i < z_max; i++)
+		{
+			sprintf_s(filename, "%s%s%s_%d.txt", directory, folder, filename_base, i);
+			std::ifstream	slice_file(filename);
+			outfile << slice_file.rdbuf();
+			slice_file.close();
+		}
+	}
+	else
+		cout << "File exists and overwriting is off" << endl;
+}
 template<typename T> void combine_x_n_slices( const char* filename_base, const char* directory, const char* folder, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
 	char fname[256];
 	for( int iteration = 0; iteration <= iterations; iteration++)
 	{
 		sprintf_s(fname, "%s%d", filename_base, iteration);
-		combine_x_slices<T>( fname, directory, folder, x_max, y_max, z_max, overwrite );
+		//combine_x_slices<T>( fname, directory, folder, x_max, y_max, z_max, overwrite );
+		concat_x_slices<T>( fname, directory, folder, x_max, y_max, z_max, overwrite );
 	}
 }
 template<typename T> void combine_set_x_n_slices( const char* filename_base, const char* directory, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
@@ -399,7 +415,7 @@ template<typename T> void combine_set_x_n_slices( const char* filename_base, con
 			int i = 1;
 			char folder[256];
 			char exec_command[512];
-			char mkdir_command[] = "dir -/b";
+			char mkdir_command[] = "dir -/b /a:d";
 			sprintf_s( exec_command, "%s %s", mkdir_command, directory);
 			std::stringstream  lineStream(exec(exec_command));
 			std::string termout;
@@ -407,6 +423,8 @@ template<typename T> void combine_set_x_n_slices( const char* filename_base, con
 			////char bdir[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\";
 			//combine_set_x_n_slices( filename_base, directory, folder, iterations, x_max, y_max, z_max );
 			//combine_set_x_n_slices( basename, bdir, folder, iterations, columns, rows, slices );
+			
+			//while(lineStream >> termout && i <5)
 			while(lineStream >> termout)
 			{
 				sprintf_s(folder, "%s\\", termout.c_str());
@@ -418,6 +436,7 @@ template<typename T> void combine_set_x_n_slices( const char* filename_base, con
 				//	sprintf_s(fname, "%s%d", basename, iteration);
 				//	combine_x_slices<float>( filename_base, directory, folder, x_max, y_max, z_max, 0, true );
 				//}
+				//i++;
 			}
 }
 std::string exec(const char* cmd) 
@@ -432,39 +451,25 @@ std::string exec(const char* cmd)
     }
     return result;
 }
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 std::string color_encoding_statement(const char* text_color_code, const char* background_color_code, const char* underlining_coding )
 {
-	//char color_encoding[512];
-	//sprintf_s(color_encoding, "%s%s;%s%sm", OPEN_COLOR_ESCAPE_SEQ, text_color_code, background_color_code, underlining_coding );
-	//return std::string(color_encoding);
 	std::string out_statement = std::string(OPEN_COLOR_ESCAPE_SEQ) + std::string(text_color_code) + std::string(";") + std::string(background_color_code) + std::string(underlining_coding)+ std::string("m") ;
 	return out_statement;
 }
 template<typename T> std::string quote_text(T text ){ return std::string("\"") + std::string(text) + std::string("\""); }
 template<typename T> std::string echo_cmd(T statement)
 {
-	//char color_command[512];
-	//std::string in_statement = std::string(statement);
-	//#if defined(_WIN32) || defined(_WIN64)
-	//	sprintf_s(color_command, "%s %s", WIN_ECHO_CMD, in_statement.c_str());
-	//#else
-	//	sprintf_s(color_command, "%s \"%s\"", BASH_ECHO_CMD, in_statement.c_str());
-	//#endif
-	//return std::string(color_command);;
-	//std::string out_statement;
 	#if defined(_WIN32) || defined(_WIN64)
 		return std::string(WIN_ECHO_CMD) + std::string(SPACE_STRING) + std::string(statement);
 	#else
 		return std::string(BASH_ECHO_CMD) + std::string(SPACE_CHAR) + quote_text(statement);
 	#endif
-	//return out_statement;
 }
 std::string change_text_color_cmd(const char* text_color_code, const char* background_color_code, const char* underlining_coding, bool reset)
 {
-	//char color_command[256];
-	//if( !reset ) sprintf_s(color_command, "%s \"\033[%s;%s%sm\"", BASH_ECHO_CMD, text_color_code, background_color_code, underlining_coding );
-	//else sprintf_s(color_command, "%s \"\033[m\"", BASH_ECHO_CMD);
-	//return std::string(color_command);
 	std::string color_encoding;
 	if( !reset ) color_encoding = color_encoding_statement(text_color_code, background_color_code, underlining_coding );
 	else color_encoding = std::string(CLOSE_COLOR_ESCAPE_SEQ);
@@ -472,46 +477,12 @@ std::string change_text_color_cmd(const char* text_color_code, const char* backg
 }
 void change_text_color(const char* text_color_code, const char* background_color_code, const char* underlining_coding, bool reset)
 {
-	//char color_command[256];
-	//if( !reset ) sprintf_s(color_command, "%s \"%s%s;%s%sm\"", BASH_ECHO_CMD, OPEN_COLOR_ESCAPE_SEQ, text_color_code, background_color_code, underlining_coding );
-	//else sprintf_s(color_command, "%s \"%s\"", BASH_ECHO_CMD, CLOSE_COLOR_ESCAPE_SEQ);
-	//system(color_command);
 	std::string color_encoding = change_text_color_cmd(text_color_code, background_color_code, underlining_coding, reset);
 	system(color_encoding.c_str());
 }
-//template<typename T> std::string colored_text(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
-//{
-//	//char color_command[256];
-//	//sprintf_s(color_command, "%s%s%s", color_encoding.c_str(), statement.c_str(), CLOSE_COLOR_ESCAPE_SEQ );
-//	//std::string statement_str(color_command);
-//	//return statement_str;
-//	//return std::string(color_command);
-//	//std::string out_statement = color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ);
-//	//return out_statement;	
-//	std::string color_encoding = color_encoding_statement(text_color_code, background_color_code, underlining_coding );
-//	return std::string(color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ));
-//}
-//template<typename T> std::string echo_statement(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
-//{
-//	//char color_command[512];
-//	//std::string color_encoding = color_encoding_statement(text_color_code, background_color_code, underlining_coding );
-//	//sprintf_s(color_command, "%s%s%s", color_encoding.c_str(), std::string(statement).c_str(), CLOSE_COLOR_ESCAPE_SEQ);
-//	//return echo_cmd(color_command, text_color_code, background_color_code, underlining_coding );
-//	//std::string in_statement = color_encoding + std::string(statement)+ std::string(CLOSE_COLOR_ESCAPE_SEQ);
-//	//return echo_cmd(in_statement, text_color_code, background_color_code, underlining_coding );	
-//	std::string in_statement = colored_text(statement, text_color_code, background_color_code, underlining_coding );
-//	return echo_cmd(in_statement);
-//}
-//template<typename T> void print_colored_text(T statement, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
-//{
-//	std::string echo_command = echo_statement<T>(statement, text_color_code, background_color_code, underlining_coding );
-//	system(echo_command.c_str());
-//}
 void print_section_separator(const char separation_char, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
 {
 	std::string section_separator_str(CONSOLE_WINDOW_WIDTH, separation_char);
-	//std::string statement_colored = colored_text(section_separator_str, text_color_code, background_color_code, underlining_coding );
-	//print_colored_text(statement_colored, text_color_code, background_color_code, underlining_coding );
 	print_colored_text(section_separator_str, text_color_code, background_color_code, underlining_coding );
 	if(separation_char == MAJOR_SECTION_SEPARATOR)
 		print_colored_text(section_separator_str, text_color_code, background_color_code, underlining_coding );	
@@ -544,9 +515,6 @@ void print_section_header( const char* statement, const char separation_char, co
 		std::string header_str = leading_dashes_str_colored + header_substr_colored + trailing_dashes_str_colored;
 		std::string echo_statement = echo_cmd(header_str); 
 		system(echo_statement.c_str());
-		//header_output = 
-		//sprintf_s(header_output, "%s \"%s%s%s\"", BASH_ECHO_CMD, leading_dashes_str_colored.c_str(), header_substr_colored.c_str(), trailing_dashes_str_colored.c_str() );
-		//system(header_output);
 		index += line_length;
 	}
 	print_section_separator(separation_char, separator_text_color_code, background_color_code, underlining_coding );
@@ -573,21 +541,11 @@ void print_section_exit( const char* statement, const char* leading_statement_ch
 		std::string section_exit_output = leading_chars_str_colored + section_exit_substr_colored;
 		std::string echo_statement = echo_cmd(section_exit_output); 
 		system(echo_statement.c_str());
-		//sprintf_s(section_exit_output, "%s \"%s%s\"", BASH_ECHO_CMD, leading_chars_str_colored.c_str(), section_exit_substr_colored.c_str());		
-		//system(section_exit_output);
 		leading_chars_str_colored = colored_text(leading_spaces, separator_text_color_code, background_color_code, underlining_coding );	
 		index += line_length;
 	}
 	puts(EMPTY_STRING);
 }
-//template<typename T> void print_labeled_value(const char* statement, T value, const char* statement_color_code, const char* value_color_code, const char* background_color_code, const char* underlining_coding )
-//{
-//	std::stringstream value_string;
-//	value_string << value;
-//	std::string value_string_colored = colored_text(value_string.str(), value_color_code, background_color_code, underlining_coding );	
-//	std::string out_string_colored = std::string(statement) + value_string_colored;	
-//	print_colored_text(out_string_colored, statement_color_code, background_color_code, underlining_coding );			
-//}
 void print_multiline_bash_results(const char* command, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
 {
 	std::string echo_command = echo_statement("${i}", text_color_code, background_color_code, underlining_coding );
@@ -600,11 +558,11 @@ void print_multiline_bash_results(const char* command, const char* text_color_co
 		sprintf_s(system_command, "OIFS=$IFS; IFS=$'\\n'; for i in $(%s); do %s; done; IFS=$OIFS", command, echo_command.c_str());
 		system(system_command);
 	#endif
-	//sprintf_s(system_command, "OIFS=$IFS; IFS=$'\\n'; for i in $(%s); do %s; done; IFS=$OIFS", command, echo_command.c_str());
-	//system(system_command);
 }
-
-void preprocessing_testing(bool on){if(on)
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+void preprocessing_testing()
 {
 	size_t file_size = 11379018252;
 	ULL file_size2 = 11379018252;
@@ -626,8 +584,8 @@ void preprocessing_testing(bool on){if(on)
 	printf("sizeToUse = %ld\n", sizeToUse);
 	printf("sizeToUse2 = %zu\n", sizeToUse2);
 
-}}
-void pCT_general_testing(bool on){if(on)
+}
+void pCT_general_testing()
 {
 	//tuple_mapping();
 	int num = 2;
@@ -642,8 +600,8 @@ void pCT_general_testing(bool on){if(on)
 	cout << (*t_point) << endl;
 	t--;
 	cout << (*t_point) << endl;
-}}
-void pCT_stringops_testing(bool on){if(on)
+}
+void pCT_stringops_testing()
 {
 	//char FBP_FILTER_CSTRING[32];
 	//char HULL_FILTER_CSTRING[32];
@@ -658,34 +616,24 @@ void pCT_stringops_testing(bool on){if(on)
 		cout << HULL_FILTER_STRING << endl;
 		if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
 			exit_program();	
-}}
-void pCT_printing_testing(bool on){if(on)
+}
+void pCT_printing_testing()
 {
-	//print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-	//echo_statement<const char*>("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-	//echo_statement<std::string>(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-	//echo_statement("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-	//echo_statement(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
 	cout<< "colorless hello " << endl;
-	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-	print_colored_text(std::string("hello"), RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
+	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, UNDERLINE_TEXT );
+	print_colored_text(std::string("hello"), GREEN_TEXT, BLACK_BACKGROUND, UNDERLINE_TEXT );
 	sprintf_s( print_statement, "Performing testing of functions currently in development");
 	print_section_header( print_statement, MAJOR_SECTION_SEPARATOR, RED_TEXT, RED_TEXT, WHITE_BACKGROUND, DONT_UNDERLINE_TEXT );
-	print_section_exit( "Finished input data verification", SECTION_EXIT_CSTRING, RED_TEXT, RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );	
-	int x = 4;
-	//std::string num(x);
+	print_section_exit( "Finished input data verification", SECTION_EXIT_CSTRING, GREEN_TEXT, RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );	
 	print_labeled_value("COLUMNS =", 200, GREEN_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_labeled_value("COLUMNS =", 3.5698, RED_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_labeled_value("COLUMNS =", "clm", BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
-	print_labeled_value("COLUMNS =", 'a', BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_labeled_value("COLUMNS =", 'a', YELLOW_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_multiline_bash_results("dir /b", LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);
-	//exit_program();		
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, true);
-	//return;
-	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, DONT_UNDERLINE_TEXT );
-}}
-void TVS_beta_sequence_testing(bool on){if(on)
+}
+void TVS_beta_sequence_testing()
 {
 	/*
 	int TVS_ETA_SEQUENCE_LENGTH = log(TVS_MIN_ETA)/log(ALPHA);
@@ -706,19 +654,16 @@ void TVS_beta_sequence_testing(bool on){if(on)
 
 	printf("TVS_beta_sequence_h[%d]  = %6.12lf\n", ELL, TVS_beta_sequence_h[ELL]  );
 
-}}
-void TVS_ell_assign_testing(bool on){if(on)
+}
+void TVS_ell_assign_testing()
 {
-	//int k = 4, ELL = 10, N = 5, K = 12;
 	k = 4, ELL = 10, N = 5, K = 12;
-
 	//ELL = randi(k-1, ELL);										// Randomly choose integer in [k,ELL] using default engine, resulting in a larger perturbation factor
 	//printf("ELL = %d\n", ELL );
-	
 	int min = ELL, max = k;
-	    if( ELL > k )
-        {
-        	min = k;
+	if( ELL > k )
+	{
+		min = k;
 		max = ELL;
 	}
 	for(int i = 0; i < 10; i++)
@@ -736,29 +681,73 @@ void TVS_ell_assign_testing(bool on){if(on)
 	else if ( min == 3) cout << 33 << endl;
 	else if ( min == 4) cout << 4 << endl;
 	else puts("WRONG MODE");
-}}
-void block_ordering_testing(bool on){if(on)
+}
+void block_ordering_testing()
 {
 	recon_DROP_initializations();
 	BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
 	cout << ( block_order == ROTATE_LEFT) << endl;
-}}
-void slice_merging_testing(bool on){if(on)
+}
+void slice_merging_testing()
 {
 	int iterations = 12, slices = 20, columns = 200, rows = 200;
 	char basename[] = "x_";
 	char bdir[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\";
-	//combine_set_x_n_slices( filename_base, directory, iterations, x_max, y_max, z_max );
-	combine_set_x_n_slices<float>( basename, bdir, iterations, columns, rows, slices, false );
-}}
-void pCT_development(bool on){if(on)
+	combine_set_x_n_slices<float>( basename, bdir, iterations, columns, rows, slices, true ); // false true
+}
+void TV_measurements( const char* directory, const int iterations, bool overwrite )
 {
-	pCT_printing_testing(pCT_printing_test);
-	//preprocessing_testing(preprocessing_test);
-	//TVS_beta_sequence_testing(TVS_beta_sequence_test);
-	//TVS_ell_assign_testing(TVS_ell_assign_test);
-	//block_ordering_testing(block_ordering_test);
-	//slice_merging_testing(slice_merging_test);
-	//pCT_general_testing(pCT_general_test);
-	//pCT_stringops_testing(pCT_stringops_test);	
-}}
+	int i = 0;
+	char folder[256];
+	char csvfile[256];
+	char textfile[256];
+	char TV_calculated[] = "TV_calculated.csv";
+	char TV_measurements[] = "TV_measurements.txt";
+	char exec_command[512];
+	char mkdir_command[] = "dir -/b /a:d";
+	sprintf_s( exec_command, "%s %s", mkdir_command, directory);
+	std::stringstream  lineStream(exec(exec_command));
+	std::string termout;
+	//while(lineStream >> termout && i <5)
+	while(lineStream >> termout)
+	{
+		sprintf_s(csvfile, "%s\\%s\\%s", directory, termout.c_str(), TV_calculated);
+		sprintf_s(textfile, "%s\\%s\\%s", directory, termout.c_str(), TV_measurements);
+		cout<< i++ << ": " << termout << endl;
+		std::ifstream file ( csvfile ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+		std::ofstream outfile ( textfile ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
+		std::string value;
+		i = 0;
+		while ( file.good() )
+		{
+			std::getline ( file, value, ',' ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
+			if( i >= 14)
+			{
+				outfile.setf( std::ios::fixed, std:: ios::floatfield ); // floatfield set to fixed	
+				outfile.precision(6); 
+				outfile << std::stod(value) << endl <<std::stod(value) << endl;
+			}
+			i++;
+		}
+		file.close();
+		outfile.close();
+	}
+}
+void TV_measurements_testing()
+{
+	int iterations = 12;
+	char bdir[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\";
+	TV_measurements( bdir, iterations, true );
+}
+void pCT_development()
+{
+	construct_pCT_params();
+	test_of(TV_CSV_to_TXT);
+	test_of(pCT_general);
+	test_of(pCT_stringops);
+	test_of(pCT_printing);
+	test_of(TVS_beta_sequence);
+	test_of(TVS_ell_assign);
+	test_of(pCT_block_ordering);
+	test_of(pCT_slice_merging);
+}

@@ -1,5 +1,4 @@
 #include "../include/AKS_development.h"
-//#include "../include/code_development.h"
 
 static bool IsPrime(unsigned int n)
 {
@@ -80,10 +79,8 @@ protected:
 	const unsigned int m_n;
 	unsigned int m_deg;
 	unsigned int * mp_a;
-
 private:
 	CPolyMod():m_r(0), m_n(0) { mp_a = NULL; };
-
 public:
 	// default value is x
 	CPolyMod(unsigned int r, unsigned int n)
@@ -93,7 +90,6 @@ public:
 		mp_a = new unsigned int [2];
 		mp_a[0] = 0; mp_a[1] = 1;
 	}
-
 	CPolyMod(const CPolyMod & p)
 		: m_r(p.m_r), m_n(p.m_n)
 	{
@@ -103,13 +99,11 @@ public:
 		for (i = 0; i <= p.m_deg; ++i)
 			mp_a[i] = p.mp_a[i];
 	}
-
 	virtual ~CPolyMod()
 	{
 		if (mp_a != NULL)
 			delete [] mp_a;
 	}
-
 private:
 	void _polySquare()
 	{
@@ -152,7 +146,6 @@ private:
 		delete [] mp_a;
 		mp_a = p_ar;
 	}
-
 	void _polyMul(const CPolyMod & p)
 	{
 		const unsigned int deg = m_deg;
@@ -186,7 +179,6 @@ private:
 		delete [] mp_a;
 		mp_a = p_ar;
 	}
-
 	void _Mod()
 	{
 		unsigned int deg = m_deg;
@@ -201,7 +193,6 @@ private:
 		}
 		m_deg = deg;
 	}
-
 	void _Norm()
 	{
 		const unsigned int deg = m_deg;
@@ -219,7 +210,6 @@ private:
 			}
 		}
 	}
-
 public:
 	CPolyMod & operator = (const CPolyMod & p)
 	{
@@ -232,7 +222,6 @@ public:
 			mp_a[i] = p.mp_a[i];
 		return *this;
 	}
-
 	int operator != (const CPolyMod & p) const
 	{
 		if (m_deg != p.m_deg)
@@ -243,7 +232,6 @@ public:
 				return true;
 		return false;
 	}
-
 	CPolyMod & operator += (unsigned int i)
 	{
 		const unsigned int t = i % m_n;
@@ -251,7 +239,6 @@ public:
 		if (mp_a[0] >= m_n) mp_a[0] -= m_n;
 		return *this;
 	}
-
 	CPolyMod & operator -= (unsigned int i)
 	{
 		const unsigned int t = m_n - i % m_n;
@@ -259,7 +246,6 @@ public:
 		if (mp_a[0] >= m_n) mp_a[0] -= m_n;
 		return *this;
 	}
-
 	CPolyMod Pow(unsigned int e) const
 	{
 		unsigned int er = 1;
@@ -597,7 +583,7 @@ bool is_prime_Bernstein()
 	//if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
 		//break;
 }
-void AKS_development(bool on){if(on)
+void AKS_development()
 {
 		// AKS
 	// n=11701, r=11699, q=5849, s=2923
@@ -612,7 +598,6 @@ void AKS_development(bool on){if(on)
 		{
 			//cout << "n ? ";
 			//cin >> n0;
-	
 			//unsigned int n = n0;
 			prime_test_result = is_prime_Bernstein();
 			printf("prime_test_result = %d\n", prime_test_result);
@@ -621,4 +606,4 @@ void AKS_development(bool on){if(on)
 			if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
 				break;
 		}
-}}
+}

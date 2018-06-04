@@ -1,5 +1,5 @@
 //#pragma once
-#include "../include/ReminderWalker.h"
+#include "../include/walker_development.h"
 //#include "code_development.h"
 
 int RGBLCDshield_menuLevelsV[][6]   =
@@ -143,7 +143,7 @@ int LCDshield_num_sublevels(int menu_levels[][4][3][7], int* path, int new_level
     //return num_sublevels;
     return menu_levels[path[0]][path[1]][path[2]][path[3]];
 }
-void ReminderWalker(bool on){if(on)
+void walker_development()
 {
 	cout << RGBLCDshield_menuLevelsV[0][0] << endl;
 	cout << RGBLCDshield_menuLevelsV[1][0] << endl;
@@ -298,4 +298,4 @@ void ReminderWalker(bool on){if(on)
 	cout << (min((p-- + umaxval),bound)) << endl;
 	cout << (min((p-- + umaxval),bound)) << endl;
 	cout << (umaxval) << endl;
-}}
+}
