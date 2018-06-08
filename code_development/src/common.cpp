@@ -14,6 +14,50 @@ TEST_CONTROL_MAP	test_control_map;
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//std::string exec(const char* cmd)
+//{
+//    std::array<char, 128> buffer;
+//    std::string result;
+//    std::shared_ptr<FILE> pipe(_popen(cmd, "r"), _pclose);
+//    if (!pipe) throw std::runtime_error("_popen() failed!");
+//    while (!feof(pipe.get())) {
+//        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+//            result += buffer.data();
+//    }
+//    return result;
+//}
+std::string exec(const char* system_command)
+{
+	#if defined(_WIN32) || defined(_WIN64)
+		FILE* pipe = _popen(system_command, "r");
+    #else
+		FILE* pipe = popen(system_command, "r");
+    #endif
+
+    if (!pipe) return "ERROR";
+    char buffer[256];
+    std::string result;
+    while(!feof(pipe)) {
+    	if(fgets(buffer, 256, pipe) != NULL)
+    		result += buffer;
+    }
+	#if defined(_WIN32) || defined(_WIN64)
+		 _pclose(pipe);
+    #else
+		 pclose(pipe);
+    #endif
+
+    return result;
+}
+/*template<typename T> std::stringstream  ls (T directory)
+{
+    #if defined(_WIN32) || defined(_WIN64)
+		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+    #else
+		sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str()));
+   #endif
+	return std::stringstream(exec(__system_command));
+}	*/
 void test_routine( void (*TEST_FUNCTION)(), bool testing_on){ if(testing_on){ (*TEST_FUNCTION)(); }}
 void init_test_control()
 {

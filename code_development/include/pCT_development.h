@@ -57,9 +57,12 @@ extern std::vector<UINT> DROP_block_start_positions;
 extern UINT k, ELL, N, K;
 extern const char BASH_ECHO_CMD[];											// Command to secure copy data/directories between clusters/nodes
 extern const char WIN_ECHO_CMD[];											// Command to secure copy data/directories between clusters/nodes
-extern char print_statement[512];
-extern char system_command[512];
 extern const bool SAMP_PROC3;
+extern int ITERATIONS, SLICES, COLUMNS, ROWS;
+extern char PCT_DATA_DIR[];
+extern char X_BASENAME[];
+extern char TV_CALCULATED[];
+extern char TV_MEASUREMENTS[];
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -69,8 +72,13 @@ extern const bool SAMP_PROC3;
 #define TV_THRESHOLD			(1/10000)								// [#] Value of TV difference ratio |TV_y - TV_y_previous| / TV_y between successive betas where beta is not decreased more
 #define ALPHA					0.75									// Perturbation coefficient generation kernel value: BETA_K_N = ALPHA^ELL
 #define ELL_0					0										// Initial value of L used in calculating the perturbation coefficient: ALPHA^ELL
+#define CSV_SKIP_2_TV			14										// Initial value of L used in calculating the perturbation coefficient: ALPHA^ELL
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 #define CONSOLE_WINDOW_WIDTH	80										// [#] Specifies character width of stdout console window
 #define SPACE_CHAR				' '										// [character] Specifies character to use in major section separator
+#define COMMA_CHAR				','										// [character] Specifies character to use in major section separator
 #define SPACE_STRING			" "										// [character] Specifies character to use in major section separator
 #define EMPTY_STRING			" "										// [character] Specifies character to use in major section separator
 #define MAJOR_SECTION_SEPARATOR	'*'										// [character] Specifies character to use in major section separator
@@ -161,8 +169,8 @@ extern const bool SAMP_PROC3;
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-#ifndef ITEMTOOL_H  // Prevent duplicate definition
-#define ITEMTOOL_H
+#ifndef PCT_TEM_H  // Prevent duplicate definition
+#define PCT_TEM_H
 	template<typename T> std::string echo_cmd(T);
 	template<typename T> std::string colored_text(T, const char*, const char*, const char* );
 	template<typename T> std::string echo_statement(T, const char*, const char*, const char* );

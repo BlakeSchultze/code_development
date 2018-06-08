@@ -327,7 +327,7 @@ void old_impl()
 			}
 			if (b)
 			{
-				cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << "\r" << flush;;
+				cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << "\r" << std::flush;;
 
 				bool b = true;
 
@@ -345,7 +345,7 @@ void old_impl()
 					unsigned int a;
 					for (a = 1; a <= s; ++a)
 					{
-						cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << " " << a << "\r" << flush;;
+						cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << " " << a << "\r" << std::flush;;
 
 						CPolyMod lPoly(r, n);		// x
 						lPoly -= a;					// x - a
@@ -387,8 +387,8 @@ void old_impl()
 bool is_prime_AKS()
 {
 		unsigned int n;
-	cout << "n ? ";
-	cin >> n;
+	std::cout << "n ? ";
+	std::cin >> n;
 	//unsigned int n = n0;
 	bool b = false;
 	unsigned int q, r, s;
@@ -400,8 +400,8 @@ bool is_prime_AKS()
 			if (m == 0) break;
 			q = LargestPrimeFactor(r - 1);
 			if (Powm(m, (r - 1) / q, r) <= 1) continue;
-			
-			
+
+
 			//// AKS
 			//if (q >= 4 * sqrt(r) * n.Log()/log(2))
 			//{
@@ -410,7 +410,7 @@ bool is_prime_AKS()
 			//	break;
 			//}
 			//
-	
+
 			// Bernstein
 			const double cMin = 2 * floor(sqrt(r)) * log(n);
 			double c = 0;
@@ -428,7 +428,7 @@ bool is_prime_AKS()
 	}
 	if (b)
 	{
-		cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << "\r" << flush;;
+		cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << "\r" << std::flush;;
 		bool b = true;
 
 		CPolyMod rPoly(r, n);				// x
@@ -445,7 +445,7 @@ bool is_prime_AKS()
 			unsigned int a;
 			for (a = 1; a <= s; ++a)
 			{
-				cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << " " << a << "\r" << flush;;
+				cout << "n=" << n << ", r=" << r << ", q=" << q << ", s=" << s << " " << a << "\r" << std::flush;;
 
 				CPolyMod lPoly(r, n);		// x
 				lPoly -= a;					// x - a
@@ -487,8 +487,8 @@ bool is_prime_AKS()
 bool is_prime_Bernstein()
 {
 	unsigned int n;
-	cout << "n ? ";
-	cin >> n;
+	std::cout << "n ? ";
+	std::cin >> n;
 	//unsigned int n = n0;
 	bool b = false;
 	unsigned int q, r, s;
@@ -500,7 +500,7 @@ bool is_prime_Bernstein()
 			if (m == 0) break;
 			q = LargestPrimeFactor(r - 1);
 			if (Powm(m, (r - 1) / q, r) <= 1) continue;
-			
+
 			/*
 			// AKS
 			if (q >= 4 * sqrt(r) * n.Log()/log(2))
@@ -510,7 +510,7 @@ bool is_prime_Bernstein()
 				break;
 			}
 			*/
-	
+
 			// Bernstein
 			const double cMin = 2 * floor(sqrt(r)) * log(n);
 			double c = 0;

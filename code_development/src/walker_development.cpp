@@ -24,14 +24,14 @@ int RGBLCDshield_menuLevelsC[][3][2][6]   =
 };
 
 int RGBLCDshield_menuLevelsDD[4][3][7];
-	
+
 int RGBLCDshield_menuLevelsD[][4][3][7]   =
 {
     {3},
     {
-        {3}, 
+        {3},
         {
-            {-1}, 
+            {-1},
             {1,3}
         },
         {
@@ -46,9 +46,9 @@ int RGBLCDshield_menuLevelsD[][4][3][7]   =
         }
     },
     {
-        {3}, 
+        {3},
         {
-            {-1}, 
+            {-1},
             {1,3}
         },
         {
@@ -63,9 +63,9 @@ int RGBLCDshield_menuLevelsD[][4][3][7]   =
         }
     },
     {
-        {3}, 
+        {3},
         {
-            {-1}, 
+            {-1},
             {1,3}
         },
         {
@@ -84,7 +84,7 @@ int RGBLCDshield_menuLevelsE[][4][3][7]   =
 {
 	{3},//0000
 	{
-		{3},//1000 
+		{3},//1000
 		{
 			{-1}, //1100
 			{1,1111}//1110,1111
@@ -137,7 +137,7 @@ int RGBLCDshield_menuLevelsE[][4][3][7]   =
 };
 
 
-int LCDshield_num_sublevels(int menu_levels[][4][3][7], int* path, int new_level) 
+int LCDshield_num_sublevels(int menu_levels[][4][3][7], int* path, int new_level)
 {
     //int num_sublevels = menu_levels[path[0]][path[1]][path[2]][path[3]];
     //return num_sublevels;
@@ -156,10 +156,10 @@ void walker_development()
 	cout << RGBLCDshield_menuLevelsV[2][4] << endl;
 	cout << RGBLCDshield_menuLevelsV[3][0] << endl;
 
-	//int         RGBLCDshield_menuLevelsDDD[4][3][7] = {RGBLCDshield_menuLevelsD[2]};	
-	int         RGBLCDshield_menuLevelsDDD[] = {*(*RGBLCDshield_menuLevelsD[1][1])};	
+	//int         RGBLCDshield_menuLevelsDDD[4][3][7] = {RGBLCDshield_menuLevelsD[2]};
+	int         RGBLCDshield_menuLevelsDDD[] = {*(*RGBLCDshield_menuLevelsD[1][1])};
 	cout << "[0][0][0][0] : " << RGBLCDshield_menuLevelsD[0][0][0][0] << endl;
-	cout << "[1][0][0][0] : "<< RGBLCDshield_menuLevelsD[1][0][0][0] << endl; 
+	cout << "[1][0][0][0] : "<< RGBLCDshield_menuLevelsD[1][0][0][0] << endl;
 	cout << "[1][1][0][0] : "<< RGBLCDshield_menuLevelsD[1][1][0][0] << endl;
 	cout << "[1][2][0][0] : "<< RGBLCDshield_menuLevelsD[1][2][0][0] << endl;
 	cout << "[1][3][0][0] : "<< RGBLCDshield_menuLevelsD[1][3][0][0] << endl;
@@ -169,7 +169,7 @@ void walker_development()
 	cout << "[2][3][0][0] : "<< RGBLCDshield_menuLevelsD[2][3][0][0] << endl;
 	cout << "[2][4][0][0] : "<< RGBLCDshield_menuLevelsD[2][4][0][0] << endl;
 	cout << "[3][0][0][0] : "<< RGBLCDshield_menuLevelsD[3][0][0][0] << endl;
-		
+
 	cout << "[0][0][1][0] : "<< RGBLCDshield_menuLevelsD[0][0][1][0] << endl;
 	cout << "[1][0][1][0] : "<< RGBLCDshield_menuLevelsD[1][0][1][0] << endl;
 	cout << "[1][1][1][0] : "<< RGBLCDshield_menuLevelsD[1][1][1][0] << endl;
@@ -193,7 +193,7 @@ void walker_development()
 	cout << "[2][3][1][1] : "<< RGBLCDshield_menuLevelsD[2][3][1][1] << endl;
 	cout << "[2][4][1][1] : "<< RGBLCDshield_menuLevelsD[2][4][1][1] << endl;
 	cout << "[3][0][1][1] : "<< RGBLCDshield_menuLevelsD[3][0][1][1] << endl;
-		
+
 	cout << "RGBLCDshield_menuLevelsE[][4][3][7] " << endl<< endl;
 	cout << "[0][0][0][0] : 3="<< RGBLCDshield_menuLevelsE[0][0][0][0] << endl;
 	cout << "[1][0][0][0] : 3="<< RGBLCDshield_menuLevelsE[1][0][0][0] << endl;
@@ -201,13 +201,13 @@ void walker_development()
 	cout << "[1][2][0][0] : -2="<< RGBLCDshield_menuLevelsE[1][2][0][0] << endl;
 	cout << "[1][3][0][0] : -2="<< RGBLCDshield_menuLevelsE[1][3][0][0] << endl;
 
-	
+
 	cout << "[1][1][1][0] : 1="<< RGBLCDshield_menuLevelsE[1][1][1][0] << endl;
 	cout << "[1][2][1][0] : 3="<< RGBLCDshield_menuLevelsE[1][2][1][0] << endl;
 	cout << "[1][2][2][0] : 3="<< RGBLCDshield_menuLevelsE[1][2][2][0] << endl;
 	cout << "[1][3][1][0] : 2="<< RGBLCDshield_menuLevelsE[1][3][1][0] << endl;
 	cout << "[1][3][2][0] : 6="<< RGBLCDshield_menuLevelsE[1][3][2][0] << endl;
-	
+
 	cout << "[1][1][1][1] : "<< RGBLCDshield_menuLevelsE[1][1][1][1] << endl;
 	cout << "[1][2][1][1] : "<< RGBLCDshield_menuLevelsE[1][2][1][1] << endl;
 	cout << "[1][2][1][2] : "<< RGBLCDshield_menuLevelsE[1][2][1][2] << endl;
@@ -235,7 +235,7 @@ void walker_development()
 	cout << "[2][3][1][0] : 2="<< RGBLCDshield_menuLevelsE[2][3][1][0] << endl;
 	cout << "[2][3][2][0] : 6="<< RGBLCDshield_menuLevelsE[2][3][2][0] << endl;
 
-	
+
 	cout << "[2][1][1][1] : "<< RGBLCDshield_menuLevelsE[2][1][1][1] << endl;
 	cout << "[2][2][1][1] : "<< RGBLCDshield_menuLevelsE[2][2][1][1] << endl;
 	cout << "[2][2][1][2] : "<< RGBLCDshield_menuLevelsE[2][2][1][2] << endl;
@@ -262,7 +262,7 @@ void walker_development()
 	cout << "[3][2][2][0] : 3="<< RGBLCDshield_menuLevelsE[3][2][2][0] << endl;
 	cout << "[3][3][1][0] : 2="<< RGBLCDshield_menuLevelsE[3][3][1][0] << endl;
 	cout << "[3][3][2][0] : 6="<< RGBLCDshield_menuLevelsE[3][3][2][0] << endl;
-	
+
 	cout << "[3][1][1][1] : "<< RGBLCDshield_menuLevelsE[3][1][1][1] << endl;
 	cout << "[3][2][1][1] : "<< RGBLCDshield_menuLevelsE[3][2][1][1] << endl;
 	cout << "[3][2][1][2] : "<< RGBLCDshield_menuLevelsE[3][2][1][2] << endl;
@@ -282,7 +282,7 @@ void walker_development()
 	int path[] = {2,2,0,0};
 	int sublvls = LCDshield_num_sublevels(RGBLCDshield_menuLevelsE, path, 1);
 	cout << "sublvls = "<< sublvls << endl;
-	
+
 	//cout << "0 : "<< RGBLCDshield_menuLevelsDDD[0] << endl;
 	//cout << "1 : "<< RGBLCDshield_menuLevelsDDD[1] << endl;
 	//cout << "2 : "<< RGBLCDshield_menuLevelsDDD[2] << endl;
@@ -293,9 +293,9 @@ void walker_development()
 	unsigned int bound = 50;
 	unsigned int umaxval = std::numeric_limits<unsigned int>::max();
 	int maxval = std::numeric_limits<int>::max() - std::numeric_limits<int>::min()-1;
-	cout << (min(p-- + umaxval, bound)) << endl;
-	cout << (min((p-- + umaxval),bound)) << endl;
-	cout << (min((p-- + umaxval),bound)) << endl;
-	cout << (min((p-- + umaxval),bound)) << endl;
+	cout << (std::min(p-- + umaxval, bound)) << endl;
+	cout << (std::min((p-- + umaxval),bound)) << endl;
+	cout << (std::min((p-- + umaxval),bound)) << endl;
+	cout << (std::min((p-- + umaxval),bound)) << endl;
 	cout << (umaxval) << endl;
 }

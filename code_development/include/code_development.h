@@ -10,16 +10,16 @@
 #include <cmath>
 #include <cstdarg>		// variable arguments: va_list, va_arg, va_start, va_end, va_copy
 #include <cstddef>		// offsetof
-#include <cstdio>		// printf, sprintf,  
+#include <cstdio>		// printf, sprintf,
 #include <cstdlib>		// standard library: rand, srand
 #include <cstring>
-#include <ctime>		// clock(), time() 
+#include <ctime>		// clock(), time()
 #include <ctype.h>
 #include <fstream>
 #include <functional>	// std::multiplies, std::plus, std::function, std::negate
 #include <iostream>
 #include <limits>		// Numeric limits of fundamental data types
-#include <map>			// Mapping provides ability to access an element's mapped value using the element's unique key value identifier 
+#include <map>			// Mapping provides ability to access an element's mapped value using the element's unique key value identifier
 #include <memory>
 #include <new>			// dynamic memory allocation/destruction
 #include <numeric>		// inner_product, partial_sum, adjacent_difference, accumulate
@@ -31,11 +31,26 @@
 #include "sys/types.h"	// stat f
 #include "sys/stat.h"	// stat functions
 #include <typeinfo>		//operator typeid
+#include <type_traits>	//operator typeid
 #include <unordered_map>//std::unordered_map
 #include <utility>		// for std::move
 #include <vector>
+#if defined(_WIN32) || defined(_WIN64)
+	//#include "Shlwapi.h"
+	//#include <windows.h>
+	//#include "getopt.h"
+#else
+	#include <initializer_list>
+    #include <getopt.h>
+	#include <unistd.h>
+#endif
 
-using namespace std;
+//#include "../src/structdef.cpp"
+//#include "fmtgen.h"
+
+//-----------------------------------------------------------------------------------------------------------------
+//using namespace std;
+using std::cin;
 using std::cout;
 using std::endl;
 using std::chrono::system_clock;
@@ -52,6 +67,35 @@ typedef void (*TEST_FUNCTION)(void); // function pointer type
 	typedef std::pair<TEST_FUNCTION, bool> TEST_CONTROL;
 #endif
 typedef std::unordered_map<std::string, TEST_CONTROL> TEST_CONTROL_MAP;
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//class arglist_typed
+//{
+//    public:
+//        template<typename ...Args,
+//        typename=std::void_t<std::enable_if_t
+//        <std::is_same_v<Args, int>>...>>
+//        void operator()(Args ...args){}
+//};
+//class foo {
+//
+//public:
+//
+//    template<typename ...Args,
+//         typename=std::void_t<std::enable_if_t
+//                      <std::is_same_v<Args, int>>...>>
+//    void operator()(Args ...args)
+//    {
+//    }
+//};
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+#ifndef COMMON_TEM_H
+#define COMMON_TEM_H
+	template<typename T> std::stringstream  ls (T);
+	template<typename T> std::string stringify(T string_input);
+	template<typename T> const char* charify(T string_input);
+	#include "..//src//common.tem"  // Include the implementation
+#endif
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -91,10 +135,32 @@ extern const bool			walker_test;
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+extern char __print_statement[512];
+extern char __system_command[512];
+extern char __ls_cmd_linux[];
+extern char __ls_cmd_win[];
+extern char __folder[512];
+extern char __filename[512];
+extern char __csvfile[512];
+extern char __textfile[512];
+extern int __i;
+extern std::ifstream __input_file;
+extern std::ofstream __output_file;
+extern std::string __termout;
+extern std::string	__line__input;
+extern std::string __input_value;
+extern std::string __string;
+extern std::stringstream  __line_sstream;
+extern std::vector<std::string> strcat_elements;
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+extern std::string exec(const char*) ;
+//vtemplate<typename T>  std::stringstream ls(T);
 extern void exit_program();
-extern void exit_program_if( bool early_exit);
-extern void exit_program_if( char* exit_statement, char continue_character);
-extern bool exit_prompt( char* exit_statement, char continue_character);
+extern void exit_program_if( bool);
+extern void exit_program_if( char*, char);
+extern bool exit_prompt( char*, char);
 extern void test_routine( void (*TEST_FUNCTION)(), bool );
 extern void init_test_control();
 extern void test_of(const std::string);
@@ -102,6 +168,7 @@ extern void test_of(const std::string);
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 // Project test routine control
+extern void structdef_testing();
 extern void pCT_development();
 extern void AKS_development();
 extern void walker_development();

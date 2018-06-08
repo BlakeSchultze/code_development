@@ -1,0 +1,58 @@
+//#include "../include/code_development.h"
+extern char __print_statement[512];
+extern char __system_command[512];
+extern char __ls_cmd_linux[];
+extern char __ls_cmd_win[];
+extern char __folder[512];
+extern char __filename[512];
+extern char __csvfile[512];
+extern char __textfile[512];
+extern int __i;
+extern std::ifstream __input_file;
+extern std::ofstream __output_file;
+extern std::string __termout;
+extern std::string	__line__input;
+extern std::string __input_value;
+extern std::string __string;
+extern std::stringstream  __line_sstream;
+extern std::vector<std::string> strcat_elements;
+
+template<typename T> std::string stringify(T string_input){ return std::string(string_input); }
+template<typename T> const char* charify(T string_input){ return std::string(string_input).c_str(); }
+template<typename T> std::stringstream  ls (T directory)
+{
+    #if defined(_WIN32) || defined(_WIN64)
+		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+    #else
+        sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str()));
+    #endif
+    //__string = exec(__system_command);
+    //return std::stringstream(__string);
+    return std::stringstream(exec(__system_command));
+}
+template <typename T> void string_cat(T input_string)
+{
+    std::cout << "last input_string: " << input_string << std::endl ;
+    strcat_elements.push_back(std::string(input_string));
+	__string.clear();
+	for(int i = 0; i < strcat_elements.size(); i++)
+	{
+		__string += strcat_elements[i];
+	}
+	cout << __string << endl;
+}
+
+template<typename T, typename... Args>
+void string_cat(T input_string, Args... strcat_list) // recursive variadic function
+{
+    std::cout << "input_string: " << input_string << std::endl ;
+	strcat_elements.push_back(std::string(input_string));
+    string_cat(strcat_list...) ;
+}
+//template <class T> void func2( std::initializer_list<T> list )
+//{
+//    for( auto elem : list )
+//    {
+//        std::cout << elem << std::endl ;
+//    }
+//}
