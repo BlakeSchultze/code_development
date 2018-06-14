@@ -157,7 +157,7 @@ void walker_development()
 	cout << RGBLCDshield_menuLevelsV[3][0] << endl;
 
 	//int         RGBLCDshield_menuLevelsDDD[4][3][7] = {RGBLCDshield_menuLevelsD[2]};
-	int         RGBLCDshield_menuLevelsDDD[] = {*(*RGBLCDshield_menuLevelsD[1][1])};
+	//int         RGBLCDshield_menuLevelsDDD[] = {*(*RGBLCDshield_menuLevelsD[1][1])};
 	cout << "[0][0][0][0] : " << RGBLCDshield_menuLevelsD[0][0][0][0] << endl;
 	cout << "[1][0][0][0] : "<< RGBLCDshield_menuLevelsD[1][0][0][0] << endl;
 	cout << "[1][1][0][0] : "<< RGBLCDshield_menuLevelsD[1][1][0][0] << endl;
@@ -292,7 +292,7 @@ void walker_development()
 	unsigned int p = 3;
 	unsigned int bound = 50;
 	unsigned int umaxval = std::numeric_limits<unsigned int>::max();
-	int maxval = std::numeric_limits<int>::max() - std::numeric_limits<int>::min()-1;
+	//int maxval = std::numeric_limits<int>::max() - std::numeric_limits<int>::min()-1;
 	cout << (std::min(p-- + umaxval, bound)) << endl;
 	cout << (std::min((p-- + umaxval),bound)) << endl;
 	cout << (std::min((p-- + umaxval),bound)) << endl;

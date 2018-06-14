@@ -377,9 +377,10 @@ void old_impl()
 				cout << "n=" << n << ", not prime." << endl;
 			}
 		//}
-		//exit_program_if( true);
-		//exit_program_if( "Enter 'c' to continue execution, any other character exits program", 'c');
-		if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+//exit_program_if( true);
+		//exit_prompt( CONTINUE_PROMPT, static_cast<char*>(CHAR_ID_CHAR));
+		//if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
+		if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 			break;
 	}
 	exit_program();
@@ -479,8 +480,8 @@ bool is_prime_AKS()
 	return b;
 	//}
 	//exit_program_if( true);
-	//exit_program_if( "Enter 'c' to continue execution, any other character exits program", 'c');
-	//if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+	//exit_program_if( CONTINUE_PROMPT, CHAR_ID_CHAR);
+	//if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 		//break;
 
 }
@@ -579,8 +580,8 @@ bool is_prime_Bernstein()
 	return b;
 	//}
 	//exit_program_if( true);
-	//exit_program_if( "Enter 'c' to continue execution, any other character exits program", 'c');
-	//if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+	//exit_program_if( CONTINUE_PROMPT, CHAR_ID_CHAR);
+	//if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 		//break;
 }
 void AKS_development()
@@ -593,7 +594,7 @@ void AKS_development()
 	// n=349, r=347, q=173, s=140
 	// n=1000000007, r=3623, q=1811, s=1785
 		bool prime_test_result = false;
-		unsigned int n0;
+		//unsigned int n0;
 		while(true)
 		{
 			//cout << "n ? ";
@@ -602,8 +603,8 @@ void AKS_development()
 			prime_test_result = is_prime_Bernstein();
 			printf("prime_test_result = %d\n", prime_test_result);
 			//exit_program_if( true);
-			//exit_program_if( "Enter 'c' to continue execution, any other character exits program", 'c');
-			if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+			//exit_program_if( CONTINUE_PROMPT, CHAR_ID_CHAR);
+			if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 				break;
 		}
 }

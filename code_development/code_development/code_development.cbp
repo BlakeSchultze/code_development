@@ -12,6 +12,8 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=gnu++11" />
+					<Add option="-fpermissive" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -32,7 +34,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="../include/AKS_development.h" />
+		<Unit filename="../include/code_development.h" />
+		<Unit filename="../include/common.h" />
+		<Unit filename="../include/fmtgen.h" />
+		<Unit filename="../include/pCT_development.h" />
+		<Unit filename="../include/walker_development.h" />
+		<Unit filename="../src/AKS_development.cpp" />
+		<Unit filename="../src/code_development.cpp" />
+		<Unit filename="../src/common.cpp" />
+		<Unit filename="../src/common.tem" />
+		<Unit filename="../src/pCT_development.cpp" />
+		<Unit filename="../src/pCT_development.tem" />
+		<Unit filename="../src/structdef.cpp" />
+		<Unit filename="../src/walker_development.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

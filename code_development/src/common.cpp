@@ -1,9 +1,11 @@
+// common.cpp
 #include "../include/code_development.h"
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
-TEST_CONTROL		test_controls;
-TEST_CONTROL_MAP	test_control_map;
+//TEST_CONTROL		test_controls;
+//TEST_CONTROL_MAP	test_control_map;
+//#define PAIR_CONTROL
 #ifdef PAIR_CONTROL
 	TEST_FUNCTION get_test_function(TEST_CONTROL test_control) {return test_control.first; }
 	bool get_test_control(TEST_CONTROL test_control) { return test_control.second; }
@@ -11,6 +13,43 @@ TEST_CONTROL_MAP	test_control_map;
 	TEST_FUNCTION get_test_function(TEST_CONTROL test_control) {return std::get<0>(test_control); }
 	bool get_test_control(TEST_CONTROL test_control) { return std::get<1>(test_control); }
 #endif
+#ifndef BOOL_CONTROLS
+#define BOOL_CONTROLS
+const bool pCT_test						=	ON;
+	const bool pCT_printing_test		=	OFF;
+	const bool preprocessing_test		=	OFF;
+	const bool pCT_general_test			=	OFF;
+	const bool pCT_stringops_test		=	OFF;
+	const bool TVS_beta_sequence_test	=	OFF;
+	const bool TVS_ell_assign_test		=	OFF;
+	const bool block_ordering_test		=	OFF;
+	const bool slice_merging_test		=	ON;
+	const bool TV_CSV_to_TXT_test		=	OFF;
+const bool AKS_test						=	OFF;
+const bool walker_test					=	OFF;
+const bool structdef_test				=	OFF;
+#endif
+//const char* C_CONST_CHAR = "c";
+//const char* CONTINUE_PROMPT ="Enter 'c' to continue execution, any other character exits program";
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//char __print_statement[512];
+//char __system_command[512];
+//char __ls_cmd_win[] = "dir -/b /a:d";
+//char __ls_cmd_linux[] = "find -maxdepth 1 -type d -printf \"%f\n\"";
+//char __folder[512];
+//char __filename[512];
+//char __csvfile[512];
+//char __textfile[512];
+//int __i = 0;
+//std::ifstream __input_file;
+//std::ofstream __output_file;
+//std::string __termout;
+//std::string		__line__input;
+//std::string __input_value;
+//std::string __string;
+//std::string __outstring;
+//std::stringstream  __line_sstream;
+//std::vector<std::string> strcat_elements;
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
@@ -65,6 +104,8 @@ void init_test_control()
 	test_control_map.emplace("pCT", TEST_CONTROL(pCT_development, pCT_test));
 	test_control_map.emplace("AKS", TEST_CONTROL(AKS_development, AKS_test));
 	test_control_map.emplace("walker", TEST_CONTROL(walker_development, walker_test));
+	test_control_map.emplace("structdefs", TEST_CONTROL(structdef_testing, structdef_test));
+
 	// Project test subtest routine control
 	test_control_map.emplace("pCT_preprocessing", TEST_CONTROL(preprocessing_testing, preprocessing_test));
 	test_control_map.emplace("pCT_general", TEST_CONTROL(pCT_general_testing, pCT_general_test));

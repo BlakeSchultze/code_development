@@ -1,0 +1,248 @@
+enum DATA_FORMATS			{ OLD_FORMAT, VERSION_0, VERSION_1, CONTINUOUS	};				// Define the data formats that are supported
+enum DATA_ORDER				{ HISTORY, TYPE									};				// Define the data formats that are supported
+enum SCAN_TYPES				{ EXPERIMENTAL, SIMULATED_G, SIMULATED_T		};				// Experimental or simulated (GEANT4 or TOPAS) data
+enum FILE_TYPES				{ TEXT, BINARY									};				// Experimental or simulated data
+enum RAND_GENERATORS		{ DEFAULT_RAND, MINSTD_RAND, MINSTD_RAND0, MT19937,				// Defines the available random number generator engines
+                              MT19937_64, RANLUX24, RANLUX48, KNUTH_B		};					//
+enum IMAGE_BASES			{ VOXELS, BLOBS									};				// Defines whether images are formed using voxels or blobs as the basis elements
+enum STRUCTURAL_ELEMENTS	{ SQUARE, DISK									};				// Defines the structural elements available to the morphological operators
+enum MORPHOLOGICAL_OPS		{ EROSION, DILATION, OPENING, CLOSING			};				// Defines the mathematical morphology operators available for image processing
+enum BIN_ANALYSIS_TYPE		{ MEANS, COUNTS, MEMBERS						};				// Choices for what information about the binned data is desired
+enum BIN_ANALYSIS_FOR		{ ALL_BINS, SPECIFIC_BINS						};				// Choices for which bins the desired data should come from
+enum BIN_ORGANIZATION		{ BY_BIN, BY_HISTORY							};				// Binned data is either organized in order by bin or by history w/ bin # specified separately
+enum BIN_ANALYSIS_OF		{ WEPLS, ANGLES, POSITIONS, BIN_NUMS			};				// Choices for which type of binned data is desired
+enum FILTER_TYPES			{ RAM_LAK, SHEPP_LOGAN, NONE					};				// Define the types of filters that are available for use in FBP
+enum HULL_TYPES				{ SC_HULL, MSC_HULL, SM_HULL, FBP_HULL			};				// Define valid choices for which hull to use in MLP calculations
+enum INITIAL_ITERATE		{ X_HULL, FBP_IMAGE, HYBRID, ZEROS, IMPORT		};				// Define valid choices for which hull to use in MLP calculations
+enum TX_OPTIONS				{ FULL_TX, PARTIAL_TX, PARTIAL_TX_PREALLOCATED	};				// Define valid choices for the host->GPU data transfer method
+enum ENDPOINTS_ALGORITHMS	{ YES_BOOL, NO_BOOL								};				// Define the method used to identify protons that miss/hit the hull in MLP endpoints calculations
+enum MLP_ALGORITHMS			{ STANDARD, TABULATED							};				// Define whether standard explicit calculations or lookup tables are used in MLP calculations
+enum PROJECTION_ALGORITHMS	{ ART, SART, BIP, BICAV, DROP, OSSART, SAP, CARP,				// Define valid choices for iterative projection algorithm to use
+							  SABICAV, SADROP, SAOSSART, ROBUST_A, ROBUST_B };				//
+enum ROBUST_METHODS			{ OLS, TLS, TIKHONOV, RIDGE, MINMIN, MINMAX, ADDITIVE_UPDATE};	// Defines the robust regression methods available for robust image reconstruction
+enum LAMBDA_K_TYPES			{ CONSTANT, LINEAR_K							};				// Define valid choices for setting the relaxation parameter lambda as a function of iteration k
+enum SABIP_CONFIGS			{ SABIP_NUM_STRINGS, SABIP_STRING_SIZE			};				// Define valid choices for determining # of BIP algorithm blocks per SAP string in hybrid SAP/BIP algorithm
+enum BLOCK_ORDERING			{ CYCLIC, ROTATE_LEFT, ROTATE_RIGHT, RAND_SHUFFLE, PRIME_CYCLE};// Define options for setting the order in which BIP blocks are being used in reconstruction
+enum S_CURVES				{ SIGMOID, TANH, ATAN, ERF, LIN_OVER_ROOT		};				// Define valid choices for iterative projection algorithm to use
+enum LOG_ENTRIES			{ OBJECT_L, SCAN_TYPE_L, RUN_DATE_L, RUN_NUMBER_L,				// Define the headings of each column in the execution log
+                              ACQUIRED_BY_L, PROJECTION_DATA_DATE_L, CALIBRATED_BY_L, 		//
+                              PREPROCESS_DATE_L, PREPROCESSED_BY_L, RECONSTRUCTION_DATE_L,	//
+							RECONSTRUCTED_BY_L, COMMENTS_L					};				//
+
+struct configurations
+{
+	RAND_GENERATORS		rand_engine;					// Specify the random number generator engine to use
+	RAND_GENERATORS		tvs_rand_engine;					// Specify the random number generator engine to use
+	SCAN_TYPES		scan_type;			  		// Specifies which of the defined filters will be used in FBP
+	FILE_TYPES		file_type;						// Experimental or simulated data
+	DATA_FORMATS		data_format;					// Specify which data format to use for this run
+	IMAGE_BASES		image_basis;						// Specifies which basis is used to construct the images
+	FILTER_TYPES		fbp_filter;			  		// Specifies which of the defined filters will be used in FBP
+	HULL_TYPES		endpoints_hull;						// Specify which of the HULL_TYPES to use in this run's MLP calculations
+	INITIAL_ITERATE		x_0;						// Specify which of the HULL_TYPES to use in this run's MLP calculations
+	ENDPOINTS_ALGORITHMS	endpoints_alg;						// Specifies if boolean array is used to store whether a proton hit/missed the hull (BOOL) or uses the 1st MLP voxel (NO_BOOL)
+	TX_OPTIONS		endpoints_tx_mode;		// Specifies GPU data tx mode for MLP endpoints as all data (FULL_TX), portions of data (PARTIAL_TX), or portions of data w/ reused GPU arrays (PARTIAL_TX_PREALLOCATED)
+	LAMBDA_K_TYPES		lambda_k_type;					// Specifies whether the value of the relaxation parameter lambda is constant (CONSTANT) or linear (LINEAR_K) as a function of iteration k 
+	SABIP_CONFIGS		sabip_config;					// Specifies if # of BIP blocks per SAP string is explicitly set directly (SABIP_STRING_BLOCKS) or calculated based on # histories/SAP strings (SABIP_STRINGS)
+	BLOCK_ORDERING		block_ordering;					// Specifies selected option for setting the order in which BIP blocks are being used in reconstruction
+	MLP_ALGORITHMS		mlp_algorithm;					// Specifies whether calculations are performed explicitly (STANDARD) or if lookup tables are used for MLP calculations (TABULATED)
+	PROJECTION_ALGORITHMS	projection_algorithm;							// Specify which of the projection algorithms to use for image reconstruction
+	TX_OPTIONS		recon_tx_mode;						// Specifies GPU data tx mode for MLP+DROP as all data (FULL_TX), portions of data (PARTIAL_TX), or portions of data w/ reused GPU arrays (PARTIAL_TX_PREALLOCATED)
+	TX_OPTIONS		drop_tx_mode;						// Specifies GPU data tx mode for MLP+DROP as all data (FULL_TX), portions of data (PARTIAL_TX), or portions of data w/ reused GPU arrays (PARTIAL_TX_PREALLOCATED)
+	S_CURVES		s_curve;						// Specify S-curve to use to scale updates applied to voxels around the object boundary
+	ROBUST_METHODS		robust_method;
+	bool run_on;										// turn preprocessing on/off (t/f) to enter individual function testing without commenting
+	bool testing_on;									// write output to "testing" directory (t) or to organized dat directory (f)
+	bool block_testing_on;									// use value of variables relevant to block testing to name output directory (t) or not (f)
+	bool s_curve_testing_on;									// use value of variables relevant to block testing to name output directory (t) or not (f)
+	bool ntvs_testing_on;										// use value of variables relevant to block testing to name output directory (t) or not (f)
+	bool overwriting_ok;									// allow output to
+	bool exit_after_binning;									// exit program early after completing data read and initial processing
+	bool exit_after_hulls;									// exit program early after completing hull-detection
+	bool exit_after_cuts;									// exit program early after completing statistical cuts
+	bool exit_after_sinogram;									// exit program early after completing the construction of the sinogram
+	bool exit_after_fbp;									// exit program early after completing fbp
+	bool close_after_execution;
+	bool debug_text_on;										// provide (t) or suppress (f) print statements to console during execution
+	bool sample_std_dev;										// use sample/population standard deviation (t/f) in statistical cuts (i.e. divisor is n/n-1)
+	bool fbp_on;										// turn fbp on (t) or off (f)
+	bool import_filtered_fbp;
+	bool sc_on;									// turn space carving on (t) or off (f)
+	bool msc_on;										// turn modified space carving on (t) or off (f)
+	bool sm_on;									// turn space modeling on (t) or off (f)
+	bool count_0_wepls;									// count the number of histories with wepl = 0 (t) or not (f)
+	bool direct_image_reconstruction;
+	bool mlp_file_exists;
+	bool mlp_endpoints_file_exists;
+	char input_directory[100];//   	= "//home//karbasip//";
+	char output_directory[100];//  	= "//home//karbasip//";
+	char input_folder[100];//	 	= "input_CTP404_4M";
+	char output_folder[100];//     	= "cuda_test";
+	bool binary_encoding;									// input data provided in binary (t) encoded files or asci text files (f)
+	bool single_data_file;									// individual file for each gantry angle (t) or single data file for all data (f)
+	bool ssd_in_mm;									// ssd distances from rotation axis given in mm (t) or cm (f)
+	bool data_in_mm;									// input data given in mm (t) or cm (f)
+	bool micah_sim;
+	bool write_bin_wepls;									// write wepls for each bin to disk (t) for wepl distribution analysis, or do not (f)
+	bool write_wepl_dists;									// write mean wepl values to disk (t) or not (f): t bin = columns, v bin = rows, 1 angle per file
+	bool write_ssd_angles;									// write angles for each proton through entry/exit tracker planes to disk (t), or do not (f)
+	bool write_sc_hull;									// write sc hull to disk (t) or not (f)
+	bool write_msc_counts;								// write msc counts array to disk (t) or not (f) before performing edge detection
+	bool write_msc_hull;								// write msc hull to disk (t) or not (f)
+	bool write_sm_counts;									// write sm counts array to disk (t) or not (f) before performing edge detection
+	bool write_sm_hull;									// write sm hull to disk (t) or not (f)
+	bool write_fbp_image;									// write fbp image before thresholding to disk (t) or not (f)
+	bool write_fbp_hull;									// write fbp hull to disk (t) or not (f)
+	bool write_avg_fbp;									// write average filtered fbp image before thresholding to disk (t) or not (f)
+	bool write_median_fbp;									// write median filtered fbp image to disk (t) or not (f)
+	bool write_filtered_hull;									// write average filtered fbp image to disk (t) or not (f)
+	bool write_x_hull;									// write the hull selected to be used in mlp calculations to disk (t) or not (f)
+	bool write_x_0;									// write the hull selected to be used in mlp calculations to disk (t) or not (f)
+	bool write_x_ki;									// write the hull selected to be used in mlp calculations to disk (t) or not (f)
+	bool write_x;
+	int drop_block_size;									// # of histories in each drop block, i.e., # of histories used per image update
+	int threads_per_block;									// # of threads per gpu block for preprocessing kernels
+    int endpoints_per_block;										// # of threads per gpu block for collect_mlp_endpoints_gpu kernel
+	int histories_per_block;										// # of threads per gpu block for block_update_gpu kernel
+	int endpoints_per_thread;										// # of mlp endpoints each thread is responsible for calculating in collect_mlp_endpoints_gpu kernel
+	int histories_per_thread;										// # of histories each thread is responsible for in mlp/drop kernel block_update_gpu
+	int voxels_per_thread;										// # of voxels each thread is responsible for updating for reconstruction image initialization/updates
+	int max_gpu_histories;									// [#] number of histories to process on the gpu at a time for preprocessing, based on gpu capacity
+	int max_cuts_histories;									// [#] number of histories to process on the gpu at a time for statistical cuts, based on gpu capacity
+	int max_endpoints_histories;								// [#] number of histories to process on the gpu at a time for mlp endpoints, based on gpu capacity
+	int max_intersections;
+  	float gantry_angle_interval;										// [degrees] angle between successive projection angles
+	int gantry_angles;		// [#] total number of projection angles
+	int num_scans;										// [#] total number of scans
+	int num_files;			// [#] 1 file per gantry angle per translation
+	float ssd_t_size;									// [cm] length of ssd in t (lateral) direction
+	float ssd_v_size;
+	float t_shift;										// [cm] amount by which to shift all t coordinates on input
+	float u_shift;										// [cm] amount by which to shift all u coordinates on input
+	float v_shift;										// [cm] amount by which to shift all v coordinates on input
+	float t_bin_size;										// [cm] distance between adjacent bins in t (lateral) direction
+	int t_bins;	// [#] number of bins (i.e. quantization levels) for t (lateral) direction
+	float v_bin_size;									// [cm] distance between adjacent bins in v (vertical) direction
+	int v_bins;		// [#] number of bins (i.e. quantization levels) for v (vertical) direction
+	float angular_bin_size;										// [degrees] angle between adjacent bins in angular (rotation) direction
+	int angular_bins;		// [#] number of bins (i.e. quantization levels) for path angle
+	int num_bins;		// [#] total number of bins corresponding to possible 3-tuples [angular_bin, t_bin, v_bin]
+	int sigmas_to_keep;										// [#] number of standard deviations from mean to allow before cutting the history
+	float ram_lak_tau;					// defines tau in ram-lak filter calculation, estimated from largest frequency in slice
+	float fbp_threshold;
+	float recon_cyl_radius;									// [cm] radius of reconstruction cylinder
+	float recon_cyl_diameter;				// [cm] diameter of reconstruction cylinder
+	float recon_cyl_height;
+	float image_width;						// [cm] distance between left and right edges of each slice in image
+	float image_height;						// [cm] distance between top and bottom edges of each slice in image
+	float image_thickness;			// [cm] distance between bottom of bottom slice and top of the top slice of image
+	int columns;										// [#] number of voxels in the x direction (i.e., number of columns) of image
+	int rows;										// [#] number of voxels in the y direction (i.e., number of rows) of image
+	int slices;// [#] number of voxels in the z direction (i.e., number of slices) of image
+	int num_voxels;				// [#] total number of voxels (i.e. 3-tuples [column, row, slice]) in image
+	float voxel_width;										// [cm] distance between left and right edges of each voxel in image
+	float voxel_height;										// [cm] distance between top and bottom edges of each voxel in image
+	float voxel_thickness;									// [cm] distance between top and bottom of each slice in image
+	float slice_thickness;
+	float sc_lower_threshold;										// [cm] if wepl >= sc_lower_threshold, sc assumes the proton missed the object
+	float sc_upper_threshold;										// [cm] if wepl <= sc_upper_threshold, sc assumes the proton missed the object
+	float msc_upper_threshold;										// [cm] if wepl >= msc_lower_threshold, msc assumes the proton missed the object
+	float msc_lower_threshold;									// [cm] if wepl <= msc_upper_threshold, msc assumes the proton missed the object
+	int msc_diff_thresh;										// [#] threshold on difference in counts between adjacent voxels used by msc for edge detection
+	float sm_lower_threshold;										// [cm] if wepl >= sm_threshold, sm assumes the proton passed through the object
+	float sm_upper_threshold;									// [cm] if wepl > sm_upper_threshold, sm ignores this history
+	float sm_scale_threshold;
+	float voxel_step_size;						// [cm] length of the step taken along the path, i.e. change in depth per step for
+	float mlp_u_step;						// size of the step taken along u direction during mlp; depth difference between successive mlp points
+	int max_path_elements; // defines size of gpu array used to store a proton history's mlp voxel #s
+	ULL prime_offset;							// Separation between successive histories used in ordering histories for reconstruction
+	double eta;								// coefficient of perturbation used in robust methods
+	unsigned int method;								// integer indicating the desired robust method to use (deprecated, non in use)
+	int psi_sign;								// use a positive (1) or negative (-1) perturbation in robust methods
+	float lambda_0;							// initial value of relaxation parameter for case of linear lambda as a function of iteration k, i.e. b in lambda = mk + b ------------------------- 
+	float lambda_m;							// rate of increase of relaxation parameter for case of linear lambda as a function of iteration k, i.e. m in lambda = mk + b ----------------------
+	float lambda;							// relaxation parameter to use in image iterative projection reconstruction algorithms
+	int iterations;									// # of iterations through the entire set of histories to perform in iterative image reconstruction
+	uint sadrop_strings;					// SA-BIP Configuration Option #2: Specifies # of SAP strings separately performing BIP algorithm internally in combined SAP/BIP algorithm
+	uint sadrop_blocks_per_string;					// SA-BIP Configuration Option #1: Specifies # of BIP algorithm blocks in each SAP string of combined SAP/BIP algorithm
+	//uint sadrop_string_blocks;					// SA-BIP Configuration Option #1: Specifies # of BIP algorithm blocks in each SAP string of combined SAP/BIP algorithm
+	bool ignore_short_mlp;									// remove proton histories with short mlp paths from use in reconstruction (on) or not (off)
+	int min_mlp_length;									// minimum # of intersections required to use in reconstruction so proton's skimming object are ignored
+	bool bound_image;									// if any voxel in the image exceeds 2.0, set it to exactly 2.0
+	bool s_curve_on;									//***************************** turn on application of s-curve scaling of updates of voxels near the boundary
+	float sigmoid_steepness;								// scaling factor 'k' of logistic curve: 1 / (1 + exp[k(logistic_mid_shift - voxel)])
+	int sigmoid_mid_shift;									// x-coordinate where the signoid curve is half of its maximum value
+	bool dual_sided_s_curve;									// apply a single-sided (off) or double-sided (on) s-curve attenuation of voxel update values
+	bool tvs_on;									// perform total variation superiorization (tvs) during reconstruction
+	bool tvs_first;									// perform tvs before (on) or after (off) feasibility seeking during reconstruction
+	bool tvs_parallel;									//******************* use the sequential (off) or parallel (on) implementation of tvs
+	bool tvs_conditioned;									//****************** verify tvs perturbation improves total variation tv (on) or not (off)
+	float tvs_min_beta;								// specify minimum perturbation coefficient to include in precalculated coefficient array
+	float tv_threshold;							// [#] value of tv difference ratio |tv_y - tv_y_previous| / tv_y between successive betas where beta is not decreased more
+	float alpha;									// perturbation coefficient generation kernel value: beta_k_n = alpha^ell
+	float alpha_x0;									// perturbation coefficient generation kernel value applied on initial iterate x_0: beta_n = alpha_x0^ell ----------------------------------
+	float perturb_down_factor;							// used in scaling perturbation to yield image w/ reduced perturbation from image previously perturbed w/ larger perturbation
+	int ell_0;									// initial value of ell used in calculating the perturbation coefficient: alpha^ell
+	int ell_0_x0;									// initial value of ell used in calculating the perturbation coefficient: alpha_x0^ell -----------------------------------------------------
+	int ell;								// variable storing perturbation coefficient kernel exponent ell used in calculating the perturbation coefficient: alpha^ell
+	float beta_0;								// inital value of tvs perturbation coefficient
+	float beta;							// tvs perturbation coefficient
+	float beta_k_n;						// Value of BETA used in classical TVS as perturbation coefficient
+	UINT n;								// [#] Specifies # of times to perform TVS for each iteration of DROP
+	UINT n_x0;								// [#] Specifies # of times to perform TVS on initial iterate x_0 ----------------------------------------------------------------------------------
+	bool avg_filter_fbp;
+	bool avg_filter_hull;								// apply averaging filter to hull (t) or not (f)
+	bool avg_filter_x_0;							// apply averaging filter to initial iterate (t) or not (f)
+	bool median_filter_fbp;								// apply median filter to fbp (t) or not (f)
+	bool median_filter_hull;								// apply median filter to hull (t) or not (f)
+	bool median_filter_x_0;							// Apply averaging filter to initial iterate (T) or not (F)
+	bool superiorize_x_0;							// Apply averaging filter to initial iterate (T) or not (F)  ---------------------------------------------------------------------------------
+	UINT hull_avg_filter_radius;								// [#] Radius of the average filter to apply to hull image
+	UINT fbp_avg_filter_radius;								// [#] Radius of the average filter to apply to FBP image
+	UINT x_0_avg_filter_radius;								// [#] Radius of the average filter to apply to initial iterate
+	UINT fbp_med_filter_radius;								// [#] Radius of the median filter to apply to hull image
+	UINT hull_med_filter_radius;								// [#] Radius of the median filter to apply to FBP image
+	UINT x_0_med_filter_radius;								// [#] Radius of the median filter to apply to initial iterate
+	double hull_avg_filter_threshold;								// [#] threshold applied to average filtered hull separating voxels to include/exclude from hull (i.e. set to 0/1)
+	double fbp_avg_filter_threshold;								// [#] threshold applied to average filtered fbp separating voxels to include/exclude from fbp hull (i.e. set to 0/1)
+	double x_0_avg_filter_threshold;								// [#] threshold applied to average filtered initial iterate below which a voxel is excluded from reconstruction (i.e. set to 0)
+	char tested_by_string[50];
+	char code_owner[50];							// karbasip, plautzt, giacomettiv, zatserkl, penfolds, wittm, master
+	char program_version[50];
+	char section_exit_string[50];
+	char true_string[50];
+	char false_string[50];
+	char on_string[50];
+	char off_string[50];
+	char my_recon_dir[100];
+	char current_git_branch[30];
+	char tardis_rcode_dir[100];
+    bool perturb_A;
+	float perturbation_parameter;
+	int max_histories_2_remove;
+  	UINT size_bins_char;
+  	UINT size_bins_bool;
+  	uint size_bins_int;
+  	UINT size_bins_uint;
+  	UINT size_bins_float;
+  	UINT size_image_char;
+  	UINT size_image_bool;
+  	UINT size_image_int;
+  	UINT size_image_uint;
+  	UINT size_image_float;
+  	UINT size_image_double;
+	float x_zero_coordinate;
+  	float y_zero_coordinate;
+	float z_zero_coordinate;
+	float source_radius;
+	float trig_table_step;
+	bool run_on_kodiak;
+	unsigned int current_iterate;
+};
+
+
+
+
+configurations parameter_container;
+configurations *configurations_h; //= &parameter_container;
+configurations *configurations_d;

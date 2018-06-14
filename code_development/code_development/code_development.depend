@@ -1,0 +1,125 @@
+# depslib dependency file v1.0
+1528602930 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\aks_development.cpp
+	"../include/AKS_development.h"
+
+1528511428 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\aks_development.h
+	"code_development.h"
+
+1528967144 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\code_development.h
+	"directives.h"
+	"externs.h"
+
+1528516784 c:\users\blake\documents\github\blakeschultze\code_development\code_development\\src\\common.tem
+	"../include/code_development.h"
+
+1528959165 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\walker_development.cpp
+	"../include/walker_development.h"
+
+1527777573 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\walker_development.h
+	"code_development.h"
+
+1528967175 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\common.cpp
+	"../include/code_development.h"
+
+1528604644 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\pct_development.cpp
+	"../include/pCT_development.h"
+
+1528963661 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\pct_development.h
+	"code_development.h"
+
+1528517370 c:\users\blake\documents\github\blakeschultze\code_development\code_development\\src\\pct_development.tem
+	"../include/code_development.h"
+	"../include/pCT_development.h"
+
+1528956482 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\pct_params.cpp
+	"../include/pCT_development.h"
+
+1528967336 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\code_development.cpp
+	"../include/code_development.h"
+	"../include/common.h"
+
+1528432771 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\fmtgen.h
+	<algorithm>
+	<array>
+	<chrono>
+	<cmath>
+	<cstdarg>
+	<cstddef>
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<ctime>
+	<ctype.h>
+	<fstream>
+	<functional>
+	<iostream>
+	<limits>
+	<map>
+	<memory>
+	<new>
+	<numeric>
+	<omp.h>
+	<random>
+	<sstream>
+	<stdexcept>
+	<string>
+	"sys/types.h"
+	"sys/stat.h"
+	<typeinfo>
+	<type_traits>
+	<unordered_map>
+	<utility>
+	<vector>
+
+1528237330 c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\structdef.cpp
+	"../include/fmtgen.h"
+
+1528433854 source:c:\users\blake\documents\github\blakeschultze\code_development\code_development\src\structdef.cpp
+	"../include/fmtgen.h"
+	"../include/fmtgen.h"
+
+1528966791 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\common.h
+
+1528964053 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\globals.h
+
+1528966047 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\directives.h
+	<algorithm>
+	<array>
+	<chrono>
+	<cmath>
+	<cstdarg>
+	<cstddef>
+	<cstdio>
+	<cstdlib>
+	<cstring>
+	<ctime>
+	<ctype.h>
+	<fstream>
+	<functional>
+	<iostream>
+	<limits>
+	<map>
+	<memory>
+	<new>
+	<numeric>
+	<omp.h>
+	<random>
+	<sstream>
+	<stdexcept>
+	<string>
+	"sys/types.h"
+	"sys/stat.h"
+	<typeinfo>
+	<type_traits>
+	<unordered_map>
+	<utility>
+	<vector>
+	"getopt.h"
+	<initializer_list>
+	<getopt.h>
+	<unistd.h>
+
+1528966791 c:\users\blake\documents\github\blakeschultze\code_development\code_development\include\externs.h
+	"..//src//common.tem"
+	"..//src//pCT_development.tem"
+

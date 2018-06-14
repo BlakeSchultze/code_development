@@ -1,29 +1,31 @@
 #include "../include/pCT_development.h"
 
-UINT DROP_BLOCK_SIZE = 3200;
-UINT reconstruction_histories , DROP_last_block_size, num_DROP_blocks;
-const BLOCK_ORDERING		DROP_BLOCK_ORDER		= CYCLIC;
-BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
-//BLOCK_ORDERING block_order	= BLOCK_ORDERING{0};
-//BLOCK_ORDERING block_order	= BLOCK_ORDERING[0];
-std::vector<UINT> DROP_block_sizes;
-std::vector<UINT> DROP_block_order;
-std::vector<UINT> DROP_block_start_positions;
-UINT k = 4, ELL = 10, N = 5, K = 12;
-const char BASH_ECHO_CMD[]			= "echo -e";											// Command to secure copy data/directories between clusters/nodes
-const char WIN_ECHO_CMD[]			= "echo";											// Command to secure copy data/directories between clusters/nodes
-const bool SAMP_PROC3= true;
-int ITERATIONS = 12, SLICES = 20, COLUMNS = 200, ROWS = 200;
-char PCT_DATA_DIR[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\";
-char X_BASENAME[] = "x_";
-char TV_CALCULATED[] = "TV_calculated.csv";
-char TV_MEASUREMENTS[] = "TV_measurements.txt";
+//UINT DROP_BLOCK_SIZE = 3200;
+//UINT reconstruction_histories , DROP_last_block_size, num_DROP_blocks;
+//const BLOCK_ORDERING		DROP_BLOCK_ORDER		= CYCLIC;
+//BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
+////BLOCK_ORDERING block_order	= BLOCK_ORDERING{0};
+////BLOCK_ORDERING block_order	= BLOCK_ORDERING[0];
+//std::vector<UINT> DROP_block_sizes;
+//std::vector<UINT> DROP_block_order;
+//std::vector<UINT> DROP_block_start_positions;
+//UINT k = 4, ELL = 10, N = 5, K = 12;
+//const char BASH_ECHO_CMD[]			= "echo -e";										// Command to secure copy data/directories between clusters/nodes
+//const char WIN_ECHO_CMD[]			= "echo";											// Command to secure copy data/directories between clusters/nodes
+//const bool SAMP_PROC3= true;
+//int ITERATIONS = 12, SLICES = 20, COLUMNS = 200, ROWS = 200;
+//const char PCT_DATA_DIR[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\B_25600\\";
+//const char X_BASENAME[] = "x_";
+//const char TV_CALCULATED[] = "TV_calculated.csv";
+//const char TV_MEASUREMENTS[] = "TV_measurements.txt";
+//const char* C_CONST_CHAR = "c";
+//const char* CONTINUE_PROMPT ="Enter 'c' to continue execution, any other character exits program";
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------- Header for pCT reconstruction program -------------------------------------------------------------------------------//
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 void exit_program()
 {
-	char user_response[20];
+	//char user_response[20];
 	//timer( STOP );
 	change_text_color( YELLOW_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);std::cin.clear();
 	puts("Hit enter to stop...");
@@ -37,7 +39,7 @@ void exit_program_if( bool early_exit)
 {
 	if( early_exit )
 	{
-		char user_response[20];
+		//char user_response[20];
 		//timer( STOP );
 		puts("Hit enter to stop...");
 		//fgets(user_response, sizeof(user_response), stdin);
@@ -47,24 +49,27 @@ void exit_program_if( bool early_exit)
 		exit(1);
 	}
 }
-void exit_program_if( char* exit_statement, char continue_character)
+void exit_program_if( const char* exit_statement, char continue_character)
 {
 	puts(exit_statement);
 	char user_response;
 	std::cin.ignore ( std::numeric_limits<std::streamsize>::max(), '\n' );
 	std::cin.get(user_response);
 	//while( user_response != continue_character )
-	if( user_response != continue_character )
+	if( user_response != static_cast<int>(continue_character) )
+	//if( user_response != continue_character )
 		exit(1);
 }
-bool exit_prompt( char* exit_statement, char continue_character)
+bool exit_prompt( const char* exit_statement, char continue_character)
 {
 	puts(exit_statement);
+	//char user_response[256];
 	char user_response;
 	std::cin.ignore ( std::numeric_limits<std::streamsize>::max(), '\n' );
 	std::cin.get(user_response);
 	//while( user_response != continue_character )
-	if( user_response != continue_character )
+	if( user_response != static_cast<int>(continue_character) )
+	//if( user_response != continue_character )
 		return true;
 		//	exit(1);
 	return false;
@@ -210,17 +215,17 @@ void rotate_blocks_right()
 }
 void print_DROP_block_info()
 {
-	for(int i = 0; i < num_DROP_blocks; i++)
+	for(uint i = 0; i < num_DROP_blocks; i++)
 	{
 		cout << "i = " << i << ": " << DROP_block_order[i] << std::endl;
 	}
 	cout << endl;
-	for(int i = 0; i < num_DROP_blocks; i++)
+	for(uint i = 0; i < num_DROP_blocks; i++)
 	{
 		cout << "i = " << i << ": " << DROP_block_sizes[i] << std::endl;
 	}
 	cout << endl;
-	for(int i = 0; i < num_DROP_blocks; i++)
+	for(uint i = 0; i < num_DROP_blocks; i++)
 	{
 		cout << "i = " << i << ": " << DROP_block_start_positions[i] << std::endl;
 	}
@@ -239,7 +244,7 @@ void recon_DROP_initializations()
 	DROP_block_sizes_constructor.back() = DROP_last_block_size;
 	std::iota (DROP_block_order_constructor.begin(), DROP_block_order_constructor.end(), 0);
 	DROP_block_start_positions_constructor.front() = 0;
-	for(int i = 1; i < num_DROP_blocks; i++)
+	for(uint i = 1; i < num_DROP_blocks; i++)
 		DROP_block_start_positions_constructor[i] += DROP_block_start_positions_constructor[i - 1];
 
 	DROP_block_sizes = DROP_block_sizes_constructor;
@@ -253,19 +258,19 @@ void recon_DROP_initializations()
 	std::cout << "Rotate left block info" << std::endl;
 	rotate_blocks_left();
 	print_DROP_block_info();
-	if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+	if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 		exit_program();
 
 	std::cout << "Rotate right block info" << std::endl;
 	rotate_blocks_right();
 	print_DROP_block_info();
-	if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+	if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 		exit_program();
 
 	std::cout << "Shuffled block info" << std::endl;
 	shuffle_blocks();
 	print_DROP_block_info();
-	if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+	if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 		exit_program();
 
 	//switch{DROP_BLOCK_ORDER}
@@ -335,7 +340,7 @@ void print_section_separator(const char separation_char, const char* text_color_
 }
 void print_section_header( const char* statement, const char separation_char, const char* separator_text_color_code, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
 {
-	char header_output[256];
+	//char header_output[256];
 	std::string header_str(statement);
 	size_t length = strlen(statement), index = 0, max_line_length = 70, num_dashes, leading_dashes, trailing_dashes, line_length;
 	print_section_separator(separation_char, separator_text_color_code, background_color_code, underlining_coding );
@@ -367,7 +372,7 @@ void print_section_header( const char* statement, const char separation_char, co
 }
 void print_section_exit( const char* statement, const char* leading_statement_chars, const char* separator_text_color_code, const char* text_color_code, const char* background_color_code, const char* underlining_coding )
 {
-	char section_exit_output[256];
+	//char section_exit_output[256];
 	size_t length = strlen(statement);
 	size_t num_leading_chars = strlen(leading_statement_chars);
 	size_t index = 0, line_length, max_line_length = CONSOLE_WINDOW_WIDTH - 10;
@@ -396,7 +401,7 @@ void print_multiline_bash_results(const char* command, const char* text_color_co
 {
 	std::string echo_command = echo_statement("${i}", text_color_code, background_color_code, underlining_coding );
 	#if defined(_WIN32) || defined(_WIN64)
-		sprintf(__system_command, "%s", command, echo_command.c_str());
+		sprintf(__system_command, "%s %s", command, echo_command.c_str());
 		change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);
 		system(__system_command);
 		change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, true);
@@ -425,10 +430,10 @@ void preprocessing_testing()
 	cout << sizeToUse4 << endl;
 	cout << (static_cast<size_t>(fileFraction*file_size2)) << endl;
 	printf("file_size = %Iu\n", (unsigned long)file_size);
-	printf("file_size2 = %lu\n", file_size2);
+	printf("file_size2 = %llu\n", file_size2);
 	printf("fileFraction = %f\n", fileFraction);
-	printf("sizeToUse = %ld\n", sizeToUse);
-	printf("sizeToUse2 = %zu\n", sizeToUse2);
+	printf("sizeToUse = %ud\n", sizeToUse);
+	printf("sizeToUse2 = %ud\n", sizeToUse2);
 
 }
 void pCT_general_testing()
@@ -436,8 +441,8 @@ void pCT_general_testing()
 	//tuple_mapping();
 	int num = 2;
 	int num2 = 3;
-	double roottwo = sqrt(num^2 + num2^2);
-	unsigned int roottwoint = static_cast<unsigned int>(sqrt(num^2 + num2^2));
+	double roottwo = sqrt(((num)^2) + ((num2)^2));
+	unsigned int roottwoint = static_cast<unsigned int>(sqrt((num^2) +(num2^2)));
 	printf("roottwo = %6.6lf\n", roottwo );
 	printf("roottwoint = %d\n", roottwoint );
 
@@ -460,11 +465,13 @@ void pCT_stringops_testing()
 		std::string HULL_FILTER_STRING= set_procedure_on_off_string(SAMP_PROC2);
 		cout << FBP_FILTER_STRING << endl;
 		cout << HULL_FILTER_STRING << endl;
-		if(exit_prompt( "Enter 'c' to continue execution, any other character exits program", 'c'))
+		if(exit_prompt( CONTINUE_PROMPT, CHAR_ID_CHAR))
 			exit_program();
 }
 void pCT_printing_testing()
 {
+    //char __ls_cmd_win[] = "dir -/b /a:d";
+    //char __ls_cmd_linux[] = "find -maxdepth 1 -type d -printf \"%f\n\"";
 	cout<< "colorless hello " << endl;
 	print_colored_text("hello", RED_TEXT, BLACK_BACKGROUND, UNDERLINE_TEXT );
 	print_colored_text(std::string("hello"), GREEN_TEXT, BLACK_BACKGROUND, UNDERLINE_TEXT );
@@ -475,7 +482,7 @@ void pCT_printing_testing()
 	print_labeled_value("COLUMNS =", 3.5698, RED_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_labeled_value("COLUMNS =", "clm", BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_labeled_value("COLUMNS =", 'a', YELLOW_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
-	print_multiline_bash_results("dir /b", LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	print_multiline_bash_results(__ls_cmd_win, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, true);
 }
@@ -493,9 +500,9 @@ void TVS_beta_sequence_testing()
 	//TVS_BETA_SEQUENCE_LENGTH = log(TVS_MIN_BETA)/log(ALPHA);
 	unsigned int TVS_BETA_SEQUENCE_LENGTH = ELL_0 + 1 + N * K;
 	float* TVS_beta_sequence_h = (float*)calloc( TVS_BETA_SEQUENCE_LENGTH, sizeof(float));
-	for( int exponent = 0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
+	for( uint exponent = 0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
 		TVS_beta_sequence_h[exponent] = powf(ALPHA, exponent);
-	for( int exponent = ELL_0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
+	for( uint exponent = ELL_0; exponent < TVS_BETA_SEQUENCE_LENGTH; exponent++ )
 		printf("TVS_beta_sequence_h[%d]  = %6.12lf\n", exponent, TVS_beta_sequence_h[exponent]  );
 
 	printf("TVS_beta_sequence_h[%d]  = %6.12lf\n", ELL, TVS_beta_sequence_h[ELL]  );
@@ -554,8 +561,12 @@ void TV_measurements( const char* directory, const int iterations, bool overwrit
 				__output_file.setf( std::ios::fixed, std:: ios::floatfield ); // floatfield set to fixed
 				__output_file.precision(6);
 				__output_file << std::stod(__input_value) << endl <<std::stod(__input_value) << endl;
+	//			cout.setf( std::ios::fixed, std:: ios::floatfield ); // floatfield set to fixed
+	//			cout.precision(6);
+	//			cout << std::stod(__input_value) << endl <<std::stod(__input_value) << endl;
 			}
 			__i++;
+        //	if(__i > 1 ) return;
 		}
 		__input_file.close();
 		__output_file.close();
@@ -564,36 +575,12 @@ void TV_measurements( const char* directory, const int iterations, bool overwrit
 void TV_measurements_testing(){TV_measurements( PCT_DATA_DIR, ITERATIONS, true );}
 void pCT_development()
 {
-	construct_pCT_params();
-	string_cat("Hello", "World!!", "Please", "work");
+	//construct_pCT_params();
+	__string = string_cat("Hello", 16, " World!! ", " Please ", " work ");
+	cout << __string << endl;
+	__string = string_cat("Hello ", "World!! ", "Please ", "work ");
+	cout << __string << endl;
 	//sprintf( __system_command, "%s %s", __ls_cmd_win, PCT_DATA_DIR);
-	//__line_sstream << exec(__system_command);
-	//while(__line_sstream >> __termout)
-	//{
-	//	sprintf(__csvfile, "%s\\%s\\%s", PCT_DATA_DIR, __termout.c_str(), TV_CALCULATED);
-	//	sprintf(__textfile, "%s\\%s\\%s", PCT_DATA_DIR, __termout.c_str(), TV_MEASUREMENTS);
-	//	cout<< "dir: " << __termout << endl;
-	//	__input_file.open(__csvfile ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
-	//	__output_file.open(__textfile ); // declare file stream: http://www.cplusplus.com/reference/iostream/ifstream/
-	//	__i = 0;
-	//	while ( __input_file.good() )
-	//	{
-	//		std::getline ( __input_file, __input_value, COMMA_CHAR ); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
-	//		if( __i >= CSV_SKIP_2_TV )
-	//		{
-	//			__output_file.setf( std::ios::fixed, std:: ios::floatfield ); // floatfield set to fixed
-	//			__output_file.precision(6);
-	//			__output_file << std::stod(__input_value) << endl <<std::stod(__input_value) << endl;
-	//			cout.setf( std::ios::fixed, std:: ios::floatfield ); // floatfield set to fixed
-	//			cout.precision(6);
-	//			cout << std::stod(__input_value) << endl <<std::stod(__input_value) << endl;
-	//		}
-	//		__i++;
-	//	}
-	//	__input_file.close();
-	//	__output_file.close();
-	//	if(__i > 1 ) return;
-	//}
 	test_of(TV_CSV_to_TXT);
 	test_of(pCT_general);
 	test_of(pCT_stringops);
@@ -601,5 +588,5 @@ void pCT_development()
 	test_of(TVS_beta_sequence);
 	test_of(TVS_ell_assign);
 	test_of(pCT_block_ordering);
-	test_of(pCT_slice_merging);
+	//test_of(pCT_slice_merging);
 }

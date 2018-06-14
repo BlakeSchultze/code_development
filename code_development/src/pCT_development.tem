@@ -1,59 +1,5 @@
-//extern std::ofstream __output_file;
-
-//template<typename T>  void bins_2_disk( const char* filename_base, int*& bin_numbers, T*& data, const int data_elements, const BIN_ANALYSIS_TYPE type, const BIN_ANALYSIS_FOR which_bins, const BIN_ORGANIZATION bin_order, ... )
-//{//std::transform(angles.begin(), angles.end(), angular_bins.begin(), std::bind2nd(std::divides<int>(), configurations_h->gantry_angle_interval ) );
-//template<typename T> std::string  string_cat2(T str_1st, T str_2nd, ...)
-//{
-//	//std::string  output_string
-//	//string = stringify(str_1st) + stringify(str_2nd);
-//	string = std::string(str_1st) + std::string(str_2nd);
-//	va_list strcat_list;
-//	va_start( strcat_list, str_2nd );
-//		//va_list specific_bins;
-//		//va_start( specific_bins, bin_order );
-//		//int num_angles = va_arg(strcat_list, int );
-//		//int* angle_array = va_arg(strcat_list, int* );
-//		//angles.resize(num_angles);
-//		//std::copy(angle_array, angle_array + num_angles, angles.begin() );
-//
-//		//int num_v_bins = va_arg(strcat_list, int );
-//		//int* v_bins_array = va_arg(strcat_list, int* );
-//		//v_bins.resize(num_v_bins);
-//		//std::copy(v_bins_array, v_bins_array + num_v_bins, v_bins.begin() );
-//
-//		va_end(strcat_list);
-//		//angular_bins.resize(angles.size());
-//		//std::transform(angles.begin(), angles.end(), angular_bins.begin(), std::bind2nd(std::divides<int>(), configurations_h->gantry_angle_interval ) );
-//
-//	return string;
-//}
-
-
-extern char __print_statement[512];
-extern char __system_command[512];
-extern char __ls_cmd_linux[];
-extern char __ls_cmd_win[];
-extern char __folder[512];
-extern char __filename[512];
-extern char __csvfile[512];
-extern char __textfile[512];
-extern int __i;
-extern std::ifstream __input_file;
-extern std::ofstream __output_file;
-extern std::string __termout;
-extern std::string	__line__input;
-extern std::string __input_value;
-extern std::string __string;
-extern std::stringstream  __line_sstream;
-extern std::vector<std::string> strcat_elements;
-
-extern std::string color_encoding_statement(const char*, const char*, const char* );
-extern std::string change_text_color_cmd(const char*, const char*, const char*, bool);
-extern void change_text_color(const char*, const char*, const char*, bool);
-extern void print_section_separator(const char, const char*, const char*, const char* );
-extern void print_section_header( const char*, const char, const char*, const char*, const char*, const char* );
-extern void print_section_exit( const char*, const char*, const char*, const char*, const char*, const char* );
-extern void print_multiline_bash_results(const char*, const char*, const char*, const char* );
+#include "../include/code_development.h"
+#include "../include/pCT_development.h"
 
 template<typename T> std::string quote_text(T text ){ return std::string("\"") + std::string(text) + std::string("\""); }
 template<typename T> std::string echo_cmd(T statement)
@@ -156,17 +102,38 @@ template<typename T> void combine_x_slices( const char* filename_base, const cha
 		cout << "File exists and overwriting is off" << endl;
 	//vector_2_disk( filename_base, directory, folder, data, x_max, y_max, z_max, true);
 }
-template<typename T> void concat_x_slices( const char* filename_base, const char* directory, const char* folder, const int x_max, const int y_max, const int z_max, bool overwrite )
+template<typename B, typename D, typename F> void concat_x_slices( B filename_base, D directory, F folder, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
-	sprintf(__filename, "%s%s%s.txt", directory, folder, filename_base);
-	std::ofstream	outfile(__filename, std::ofstream::out);
+	 //cout<< "concat_x_slices: " << endl;
+     //cout<< " " <<filename_base << endl;
+     //cout<< " " <<directory << endl;
+     //cout<< " " <<folder << endl;
+    //sprintf(__filename, "%s%s%s.txt", charify(directory), charify(folder), charify(filename_base));
+	//std::ofstream	outfile(__filename, std::ofstream::out);
+	//sprintf(__textfile, "%s%s%s.txt", charify<D>(directory), charify<F>(folder), charify<B>(filename_base));
+	//sprintf(__textfile, "%s%s%s.txt", charifyB(directory), charifyB(folder), charifyB(filename_base));
+	__string = stringify(directory) + stringify(folder)  + stringify(filename_base)  + stringify(".txt");//<std::string,D,F>
+    //sprintf(__textfile, "%s.txt", charify(__string));
+	//cout<< "__textfile " <<__string.c_str() << endl;
+    std::ofstream	outfile(__string.c_str(), std::ofstream::out);
+	//sprintf(__textfile, "%s%s%s.txt", charify(directory), charify(folder), charify(filename_base));
+	//sprintf(__textfile, "%s%s%s.txt", std::string(directory).c_str(), std::string(folder).c_str(), std::string(filename_base).c_str());
+	//cout<< "__textfile " <<__textfile << endl;
+    //std::ofstream	outfile(__textfile, std::ofstream::out);
 	if( outfile.fail() || overwrite  )
 	{
-		cout << "Combining file: " << __filename << endl;
+		//cout << "Combining file: " << __textfile << endl;
+		cout << "Combining file: " << __string.c_str() << endl;
 		for( int i = 0; i < z_max; i++)
 		{
-			sprintf(__filename, "%s%s%s_%d.txt", directory, folder, filename_base, i);
-			std::ifstream	slice_file(__filename);
+			__string = stringify(directory) + stringify(folder)  + stringify(filename_base) + stringify("_") + std::to_string(i)  + stringify(".txt");//<std::string,D,F>
+            //sprintf(__textfile, "%s.txt", charify(__string));
+            //cout<< "__filename " <<__string.c_str() << endl;
+            //return;
+            std::ifstream slice_file(__string.c_str());
+			//sprintf(__filename, "%s%s%s_%d.txt", charify<D>(directory), charify<F>(folder), charify<B>(filename_base), i);
+			//cout<< "__filename " <<__filename << endl;
+            //std::ifstream	slice_file(__filename);
 			outfile << slice_file.rdbuf();
 			slice_file.close();
 		}
@@ -177,23 +144,31 @@ template<typename T> void concat_x_slices( const char* filename_base, const char
 template<typename B, typename D, typename F> void combine_x_n_slices( B filename_base, D directory, F folder, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 //template<typename D> void combine_x_n_slices( const char* filename_base, D directory, const char* folder, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
-	for( int iteration = 0; iteration <= iterations; iteration++)
+	 //cout<< "combine_x_n_slices: " << endl;
+    // cout<< " " <<filename_base << endl;
+    // cout<< " " <<directory << endl;
+    // cout<< " " <<folder << endl;
+    for( int iteration = 0; iteration <= iterations; iteration++)
 	{
-		//sprintf(__filename, "%s%d", std::string(filename_base).c_str(), iteration);
-		sprintf(__filename, "%s%d", charify(filename_base), iteration);
-		__string = stringify(filename_base) + std::to_string(iteration);
-		concat_x_slices<D>( charify(__filename), charify(directory), charify(folder), x_max, y_max, z_max, overwrite );//combine_x_slices<T>( __filename, directory, folder, x_max, y_max, z_max, overwrite );
+		//sprintf(__filename, "%s%d", charify<B>(filename_base), iteration);
+		__string = stringify(filename_base) + std::to_string(iteration);//<std::string,D,F>
+		concat_x_slices( __string, directory, folder, x_max, y_max, z_max, overwrite );//combine_x_slices<T>( __filename, directory, folder, x_max, y_max, z_max, overwrite );
+		//concat_x_slices( charify(__string), directory, folder, x_max, y_max, z_max, overwrite );//combine_x_slices<T>( __filename, directory, folder, x_max, y_max, z_max, overwrite );
 	}
+	exit_program();
 }
 template<typename B, typename D> void combine_set_x_n_slices( B filename_base, D directory, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 //void combine_set_x_n_slices( const char* filename_base, const char* directory, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
-			__line_sstream = ls(charify(directory));
-			while(__line_sstream >> __termout)
+            __i=0;
+            __line_sstream = ls<D>(directory);
+            while(__line_sstream >> __termout)
 			{
 				//sprintf(__folder, "%s\\", __termout.c_str());
+				//cout<< "__termout : " << __termout.c_str() << endl;
 				__string = __termout + "\\";
-				cout<< __i++ << ": " << __termout << endl << __termout << endl;
-				combine_x_n_slices( charify(filename_base), charify(directory), charify(__string), iterations, x_max, y_max, z_max, overwrite );
+				cout<< __i++ << ": " << __termout << endl;
+				combine_x_n_slices( filename_base, directory, __string, iterations, x_max, y_max, z_max, overwrite );
+                //exit_program();
 			}
 }
