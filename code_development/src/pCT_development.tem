@@ -112,39 +112,81 @@ template<typename B, typename D, typename F> void concat_x_slices( B filename_ba
 	//std::ofstream	outfile(__filename, std::ofstream::out);
 	//sprintf(__textfile, "%s%s%s.txt", charify<D>(directory), charify<F>(folder), charify<B>(filename_base));
 	//sprintf(__textfile, "%s%s%s.txt", charifyB(directory), charifyB(folder), charifyB(filename_base));
-	__string = stringify(directory) + stringify(folder)  + stringify(filename_base)  + stringify(".txt");//<std::string,D,F>
-    //sprintf(__textfile, "%s.txt", charify(__string));
-	//cout<< "__textfile " <<__string.c_str() << endl;
-    std::ofstream	outfile(__string.c_str(), std::ofstream::out);
-	//sprintf(__textfile, "%s%s%s.txt", charify(directory), charify(folder), charify(filename_base));
-	//sprintf(__textfile, "%s%s%s.txt", std::string(directory).c_str(), std::string(folder).c_str(), std::string(filename_base).c_str());
-	//cout<< "__textfile " <<__textfile << endl;
-    //std::ofstream	outfile(__textfile, std::ofstream::out);
-	if( outfile.fail() || overwrite  )
-	{
-		//cout << "Combining file: " << __textfile << endl;
-		cout << "Combining file: " << __string.c_str() << endl;
-		for( int i = 0; i < z_max; i++)
-		{
-			__string = stringify(directory) + stringify(folder)  + stringify(filename_base) + stringify("_") + std::to_string(i)  + stringify(".txt");//<std::string,D,F>
-            //sprintf(__textfile, "%s.txt", charify(__string));
-            //cout<< "__filename " <<__string.c_str() << endl;
-            //return;
-            std::ifstream slice_file(__string.c_str());
-			//sprintf(__filename, "%s%s%s_%d.txt", charify<D>(directory), charify<F>(folder), charify<B>(filename_base), i);
-			//cout<< "__filename " <<__filename << endl;
-            //std::ifstream	slice_file(__filename);
-			outfile << slice_file.rdbuf();
-			slice_file.close();
-		}
-	}
-	else
-		cout << "File exists and overwriting is off" << endl;
+	int j =0;
+	bool slice_files_exist = false;
+	__string = stringify(directory) + stringify(folder)  + stringify(filename_base) + stringify("_") + std::to_string(0)  + stringify(".txt");//<std::string,D,F>
+    cout<< "__textfile " <<__string.c_str() << endl;
+    std::ifstream slice_file_check;
+    slice_file_check.open(__string.c_str(), std::ios_base::out | std::ios_base::in);  // will not create file
+    if (slice_file_check.is_open() )
+        slice_files_exist = true;
+    if(slice_files_exist)
+    {
+        //sprintf(__textfile, "%s.txt", charify(__string));
+        //cout<< "__filename " <<__string.c_str() << endl;
+        //return;
+        //sprintf(__textfile, "%s.txt", charify(__string));
+        //cout<< "__textfile " <<__string.c_str() << endl;
+        //bool mfile_exists = fileExists(__string);
+        //std::fstream file;
+        //file.open(filename.c_str(), std::ios_base::out | std::ios_base::in);  // will not create file
+        __string = stringify(directory) + stringify(folder)  + stringify(filename_base)  + stringify(".txt");//<std::string,D,F>
+        __output_file.open(__string.c_str(), std::ios_base::out | std::ios_base::in);  // will not create file
+        bool output_file_exists = __output_file.is_open();
+        //std::ofstream	outfile(__string.c_str(), std::ofstream::out);
+        //sprintf(__textfile, "%s%s%s.txt", charify(directory), charify(folder), charify(filename_base));
+        //sprintf(__textfile, "%s%s%s.txt", std::string(directory).c_str(), std::string(folder).c_str(), std::string(filename_base).c_str());
+        //cout<< "__textfile " <<__textfile << endl;
+        //std::ofstream	outfile(__textfile, std::ofstream::out);
+        //oF T:F || F:T = F || T
+        //oT T:T || F:F
+        //feT: oT = T || F = T, oF = F || F = F
+        //feF: oT = F || T = T, oF = F || T = T
+        if ( (output_file_exists && overwrite) || !output_file_exists )
+        //if ( (__output_file.is_open() && overwrite) || (slice_files_exist) )
+        //if( outfile.fail() || overwrite  )
+        {
+            __output_file.close();
+            std::ofstream	outfile(__string.c_str(), std::ofstream::out);
+            //cout << "Combining file: " << __textfile << endl;
+            cout << "Combining file: " << __string.c_str() << endl;
+            for( int i = 0; i < z_max; i++)
+            {
+                __string = stringify(directory) + stringify(folder)  + stringify(filename_base) + stringify("_") + std::to_string(i)  + stringify(".txt");//<std::string,D,F>
+                //sprintf(__textfile, "%s.txt", charify(__string));
+                //cout<< "__filename " <<__string.c_str() << endl;
+                //return;
+                std::ifstream slice_file(__string.c_str());
+                if (slice_file.is_open())
+                {
+                    //sprintf(__filename, "%s%s%s_%d.txt", charify<D>(directory), charify<F>(folder), charify<B>(filename_base), i);
+                    //cout<< "__filename " <<__filename << endl;
+                    //std::ifstream	slice_file(__filename);
+                    outfile << slice_file.rdbuf();
+                    slice_file.close();
+                }
+            };
+            outfile.close();
+            j++;
+            //if(j >= 2)
+            //if(__i++ >= 1)
+               // exit_program();
+        }
+        else
+        {
+            //if(output_file_exists)
+                cout << "Output file exists and overwriting is turned off" << endl;
+           // else
+            //    cout << "Output file exists and overwriting is turned off" << endl;
+        }
+    }
+    //outfile.close();
+    //exit_program();
 }
 template<typename B, typename D, typename F> void combine_x_n_slices( B filename_base, D directory, F folder, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 //template<typename D> void combine_x_n_slices( const char* filename_base, D directory, const char* folder, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
-	 //cout<< "combine_x_n_slices: " << endl;
+	 cout<< "combine_x_n_slices: " << endl;
     // cout<< " " <<filename_base << endl;
     // cout<< " " <<directory << endl;
     // cout<< " " <<folder << endl;
@@ -155,17 +197,19 @@ template<typename B, typename D, typename F> void combine_x_n_slices( B filename
 		concat_x_slices( __string, directory, folder, x_max, y_max, z_max, overwrite );//combine_x_slices<T>( __filename, directory, folder, x_max, y_max, z_max, overwrite );
 		//concat_x_slices( charify(__string), directory, folder, x_max, y_max, z_max, overwrite );//combine_x_slices<T>( __filename, directory, folder, x_max, y_max, z_max, overwrite );
 	}
-	exit_program();
+	//exit_program();
 }
 template<typename B, typename D> void combine_set_x_n_slices( B filename_base, D directory, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 //void combine_set_x_n_slices( const char* filename_base, const char* directory, const int iterations, const int x_max, const int y_max, const int z_max, bool overwrite )
 {
             __i=0;
-            __line_sstream = ls<D>(directory);
+            __line_sstream = ls<D>(PCT_DATA_DIR);
+            cout<< "__system_command: " << endl;
+            //exit_program();
             while(__line_sstream >> __termout)
 			{
 				//sprintf(__folder, "%s\\", __termout.c_str());
-				//cout<< "__termout : " << __termout.c_str() << endl;
+				cout<< "__termout : " << __termout.c_str() << endl;
 				__string = __termout + "\\";
 				cout<< __i++ << ": " << __termout << endl;
 				combine_x_n_slices( filename_base, directory, __string, iterations, x_max, y_max, z_max, overwrite );

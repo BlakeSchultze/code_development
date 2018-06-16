@@ -9,17 +9,59 @@ template<typename T> char* charify(T string_input){ return std::string(string_in
 //    //cout<< "charify out: " <<__string << endl;
 //    return __string.c_str();
 //}
+//template<typename T, typename S> std::stringstream  ls (T directory, S... optargs)
 template<typename T> std::stringstream  ls (T directory)
 {
     #if defined(_WIN32) || defined(_WIN64)
-		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+		sprintf( __system_command, "%s \"%s\"", __ls_cmd_win, std::string(directory).c_str());
     #else
         sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str());
     #endif
+    cout<< "__system_command: " <<__system_command << endl;
     //__string = exec(__system_command);
     //return std::stringstream(__string);
     return std::stringstream(exec(__system_command));
 }
+//template<typename T> std::stringstream  lsB (T directory)
+////template<typename T, typename S> std::stringstream  lsB (T directory)
+//{
+//    //ls -d B_25600_L_0.000100_TV_1*
+//    #if defined(_WIN32) || defined(_WIN64)
+//		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+//    #else
+//        sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str());
+//    #endif
+//    //__string = exec(__system_command);
+//    //return std::stringstream(__string);
+//    return std::stringstream(exec(__system_command));
+//}
+//template<typename T, typename S> std::stringstream  lsB (T directory, S optargs...)
+////template<typename T, typename S> std::stringstream  lsB (T directory)
+//{
+//    //ls -d B_25600_L_0.000100_TV_1*
+//    #if defined(_WIN32) || defined(_WIN64)
+//		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+//    #else
+//        sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str());
+//    #endif
+//    //__string = exec(__system_command);
+//    //return std::stringstream(__string);
+//    return std::stringstream(exec(__system_command));
+//}
+//template<typename T> std::stringstream  lsC (T directory, std::string optargs = std::string(""))
+////template<typename T, typename S> std::stringstream  lsC (T directory, S optargs...)
+////template<typename T, typename S> std::stringstream  lsB (T directory)
+//{
+//    //ls -d B_25600_L_0.000100_TV_1*
+//    #if defined(_WIN32) || defined(_WIN64)
+//		sprintf( __system_command, "%s %s", __ls_cmd_win, std::string(directory).c_str());
+//    #else
+//        sprintf( __system_command, "%s %s", __ls_cmd_linux, std::string(directory).c_str());
+//    #endif
+//    //__string = exec(__system_command);
+//    //return std::stringstream(__string);
+//    return std::stringstream(exec(__system_command));
+//}
 //template <typename T> void string_cat(T input_string)
 template <typename T> std::string string_cat(T input_string)
 {

@@ -483,6 +483,7 @@ void pCT_printing_testing()
 	print_labeled_value("COLUMNS =", "clm", BLUE_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_labeled_value("COLUMNS =", 'a', YELLOW_TEXT, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	print_multiline_bash_results(__ls_cmd_win, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
+	//print_multiline_bash_results(__ls_cmd_linux, LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT);
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, false);
 	change_text_color( LIGHT_PURPLE_TEXT, GRAY_BACKGROUND, DONT_UNDERLINE_TEXT, true);
 }
@@ -511,7 +512,7 @@ void TVS_beta_sequence_testing()
 void TVS_ell_assign_testing()
 {
 	k = 4, ELL = 10, N = 5, K = 12;
-	//ELL = randi(k-1, ELL);										// Randomly choose integer in [k,ELL] using default engine, resulting in a larger perturbation factor
+	ELL = randi(k-1, ELL);										// Randomly choose integer in [k,ELL] using default engine, resulting in a larger perturbation factor
 	//printf("ELL = %d\n", ELL );
 	int min = ELL, max = k;
 	if( ELL > k )
@@ -541,7 +542,7 @@ void block_ordering_testing()
 	BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
 	cout << ( block_order == ROTATE_LEFT) << endl;
 }
-void slice_merging_testing(){ combine_set_x_n_slices( X_BASENAME, PCT_DATA_DIR, ITERATIONS, COLUMNS, ROWS, SLICES, true ); }
+void slice_merging_testing(){ combine_set_x_n_slices( X_BASENAME, PCT_DATA_DIR, ITERATIONS, COLUMNS, ROWS, SLICES, OVERWRITE ); }
 void TV_measurements( const char* directory, const int iterations, bool overwrite )
 {
 	__line_sstream = ls(std::string(PCT_DATA_DIR));
@@ -588,5 +589,5 @@ void pCT_development()
 	test_of(TVS_beta_sequence);
 	test_of(TVS_ell_assign);
 	test_of(pCT_block_ordering);
-	//test_of(pCT_slice_merging);
+	test_of(pCT_slice_merging);
 }

@@ -75,11 +75,13 @@ std::vector<UINT> DROP_block_sizes;
 std::vector<UINT> DROP_block_order;
 std::vector<UINT> DROP_block_start_positions;
 UINT k = 4, ELL = 10, N = 5, K = 12;
+bool OVERWRITE=false;
 const char BASH_ECHO_CMD[]			= "echo -e";										// Command to secure copy data/directories between clusters/nodes
 const char WIN_ECHO_CMD[]			= "echo";											// Command to secure copy data/directories between clusters/nodes
 const bool SAMP_PROC3= true;
-int ITERATIONS = 12, SLICES = 20, COLUMNS = 200, ROWS = 200;
-const char PCT_DATA_DIR[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\B_25600\\";
+int ITERATIONS = 0, SLICES = 20, COLUMNS = 200, ROWS = 200;
+//const char PCT_DATA_DIR[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\B_25600\\";//B_25600_L_0.000100_TV_1
+const char PCT_DATA_DIR[] = "D:\\pCT\\pCT_data\\reconstruction_data\\CTP404_Sensitom\\Experimental\\B_25600\\TV=1\\";//B_25600_L_0.000100_TV_1
 const char X_BASENAME[] = "x_";
 const char TV_CALCULATED[] = "TV_calculated.csv";
 const char TV_MEASUREMENTS[] = "TV_measurements.txt";

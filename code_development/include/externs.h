@@ -5,7 +5,12 @@
 #ifndef COMMON_TEM_H
     #define COMMON_TEM_H
 	template<typename T> std::stringstream  ls (T);
-	template<typename T> std::string stringify(T string_input);
+	//template<typename T> std::stringstream  lsB (T directory);
+    //template<typename T, typename S> std::stringstream  lsB (T directory);
+    //template<typename T, typename S> std::stringstream  lsB (T directory, S optargs...);
+    //template<typename T, typename S> std::stringstream  lsB (T directory);
+    //template<typename T> std::stringstream  lsC (T, std::string = std::string(""));
+    template<typename T> std::string stringify(T string_input);
 	template<typename T> char* charify(T string_input);
     #include "..//src//common.tem"  // Include the implementation
 #endif
@@ -81,6 +86,7 @@ extern std::string __string;
 extern std::string __outstring;
 extern std::stringstream  __line_sstream;
 extern std::vector<std::string> strcat_elements;
+extern bool OVERWRITE;
 extern const char* C_CONST_CHAR;
 extern const char* CONTINUE_PROMPT;
 extern const char BASH_ECHO_CMD[];											// Command to secure copy data/directories between clusters/nodes
