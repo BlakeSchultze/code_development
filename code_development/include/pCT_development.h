@@ -66,6 +66,7 @@ extern std::vector<UINT> DROP_block_start_positions;
 ////PCT_PARAMS pct_params;
 //extern std::vector<PCT_PARAMS> pct_params_vec;
 extern UINT k, ELL, N, K;
+extern UINT SLICE_MERGE_KILL_COUNT;
 extern const bool SAMP_PROC3;
 extern int ITERATIONS, SLICES, COLUMNS, ROWS;
 extern const char PCT_DATA_DIR[];

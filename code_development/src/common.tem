@@ -62,7 +62,6 @@ template<typename T> std::stringstream  ls (T directory)
 //    //return std::stringstream(__string);
 //    return std::stringstream(exec(__system_command));
 //}
-//template <typename T> void string_cat(T input_string)
 template <typename T> std::string string_cat(T input_string)
 {
     __outstring.clear();
@@ -74,10 +73,7 @@ template <typename T> std::string string_cat(T input_string)
 	//	__outstring += strcat_elements[i];
     return __outstring;
 }
-
-template<typename T, typename... Args>
-//void string_cat(T input_string, Args... strcat_list) // recursive variadic function
-std::string string_cat(T input_string, Args... strcat_list) // recursive variadic function
+template<typename T, typename... Args> std::string string_cat(T input_string, Args... strcat_list) // recursive variadic function
 {
 	__line_sstream <<  input_string;
 	string_cat(strcat_list...);
@@ -86,6 +82,15 @@ std::string string_cat(T input_string, Args... strcat_list) // recursive variadi
     //string_cat(strcat_list...);
     //strcat_elements.clear();
 	return __outstring;
+}
+template<typename... Args> void control_lkill( void (*_function)(Args... ), unsigned int kill_count_index , Args... args_list )
+{
+    //cout<< "kill_count_index: " << kill_count_index << endl;
+    __KILL_FCALL_INDEX = kill_count_index;
+    __KILL_LOOP_INDEX = kill_count_index;
+    (*_function)(args_list...);
+    __KILL_FCALL_INDEX = INT_MAX;
+    __KILL_LOOP_INDEX = INT_MAX;
 }
 //template <class T> void func2( std::initializer_list<T> list )
 //{

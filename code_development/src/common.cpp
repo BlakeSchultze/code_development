@@ -41,9 +41,9 @@ bool fileExists(const std::string& filename)
         return true;
     else
         return false;
-    return false;
+    //return false;
 }
-bool fileExists2(const std::string& filename)
+bool statFileExistence(const std::string& filename)
 {
     struct stat buf;
     if (stat(filename.c_str(), &buf) != -1)

@@ -89,22 +89,22 @@ void verify_history_sequence(ULL N, ULL offset_prime, ULL* sequence )
     {
         if(sequence[i] == 1)
         {
-            printf("repeats at i = %llu\n", i);
-            printf("history_sequence[i] = %llu\n", sequence[i]);
+            //printf("repeats at i = %llu\n", i);
+            //printf("history_sequence[i] = %llu\n", sequence[i]);
             break;
         }
         if(sequence[i] > N)
         {
-            printf("exceeds at i = %llu\n", i);
-            printf("history_sequence[i] = %llu\n", sequence[i]);
+            //printf("exceeds at i = %llu\n", i);
+            //printf("history_sequence[i] = %llu\n", sequence[i]);
             break;
         }
     }
 }
 void print_history_sequence(ULL* sequence, ULL print_start, ULL print_end )
 {
-    for( ULL i = print_start; i < print_end; i++ )
-		printf("history_sequence[i] = %llu\n", sequence[i]);
+    //for( ULL i = print_start; i < print_end; i++ )
+	//	printf("history_sequence[i] = %llu\n", sequence[i]);
 }
 //void apply_history_sequence(ULL N, ULL offset_prime, ULL* sequence)
 //{
@@ -430,7 +430,7 @@ void preprocessing_testing()
 	cout << sizeToUse4 << endl;
 	cout << (static_cast<size_t>(fileFraction*file_size2)) << endl;
 	printf("file_size = %Iu\n", (unsigned long)file_size);
-	printf("file_size2 = %llu\n", file_size2);
+	//printf("file_size2 = %llu\n", file_size2);
 	printf("fileFraction = %f\n", fileFraction);
 	printf("sizeToUse = %ud\n", sizeToUse);
 	printf("sizeToUse2 = %ud\n", sizeToUse2);
@@ -542,7 +542,11 @@ void block_ordering_testing()
 	BLOCK_ORDERING block_order	= BLOCK_ORDERING(0);
 	cout << ( block_order == ROTATE_LEFT) << endl;
 }
-void slice_merging_testing(){ combine_set_x_n_slices( X_BASENAME, PCT_DATA_DIR, ITERATIONS, COLUMNS, ROWS, SLICES, OVERWRITE ); }
+void slice_merging_testing()
+{
+    control_lkill( combine_set_x_n_slices, SLICE_MERGE_KILL_COUNT, X_BASENAME, PCT_DATA_DIR, ITERATIONS, COLUMNS, ROWS, SLICES, OVERWRITE );
+    //combine_set_x_n_slices( 3, X_BASENAME, PCT_DATA_DIR, ITERATIONS, COLUMNS, ROWS, SLICES, OVERWRITE );
+}
 void TV_measurements( const char* directory, const int iterations, bool overwrite )
 {
 	__line_sstream = ls(std::string(PCT_DATA_DIR));

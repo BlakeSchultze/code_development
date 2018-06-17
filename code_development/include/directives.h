@@ -1,13 +1,11 @@
-//#ifndef DIRECTIVES_H_INCLUDED
-//#define DIRECTIVES_H_INCLUDED
-
-//#pragma once
-//#include "../include/common.h"
-/*****************************************************************************************************************************************************************************************************/
-/*****************************************************************************************************************************************************************************************************/
-/******************************************************************************* Header for pCT reconstruction program *******************************************************************************/
-/*****************************************************************************************************************************************************************************************************/
-/*****************************************************************************************************************************************************************************************************/
+///*************************************************************************************************************************//
+///*-----------------------------------------------------------------------------------------------------------------------*//
+///*----- directives.h: Defines preprocessor directives (#include/#define), namespaces, and typedef/enum definitions ------*//
+///*-----------------------------------------------------------------------------------------------------------------------*//
+///*************************************************************************************************************************//
+//------------------------------------------------------------------------------------------------//
+//--------------------------------- Specify libraries to #include --------------------------------//
+//------------------------------------------------------------------------------------------------//
 #include <algorithm>    // std::transform
 #include <array>
 #include <chrono>		// chronology: system_clock::now().time_since_epoch().count(), duration, duration_cast
@@ -39,13 +37,49 @@
 #include <unordered_map>//std::unordered_map
 #include <utility>		// for std::move
 #include <vector>
-//	#include <getopt.h>
-////------------------------------------------------------------------------------------------------//
-////------------------------------ Detect Operating System environment -----------------------------//
-////------------------------------------------------------------------------------------------------//
-////enum OS_ENVIRONMENTS{LINUX, WIN32, WIN64, APPLE, ANDROID, AKAROS, NACL, ASMJC, FUSCHIA};
-//enum COMPILERS{GCC, MSVC, MINGW32, MINGW32W, MINGW64, CLANG, EMSCRIPTEN};
-////enum PROCESSOR_ARCHITECTURES{};
+//#include <getopt.h>
+//------------------------------------------------------------------------------------------------//
+//----------------------------- OS/compiler dependent library inclusion --------------------------//
+//------------------------------------------------------------------------------------------------//
+#if defined(_WIN32) || defined(_WIN64)
+	//#include "Shlwapi.h"
+	//#include <windows.h>
+	#include "getopt.h"
+#else
+	#include <initializer_list>
+    #include <getopt.h>
+	#include <unistd.h>
+
+#endif
+//------------------------------------------------------------------------------------------------//
+//------------------------- Define namespace usage and define typedef/enum -----------------------//
+//------------------------------------------------------------------------------------------------//
+#ifndef GLOBALS
+#define GLOBALS
+	//using namespace std;
+    using std::cin;
+    using std::cout;
+    using std::endl;
+    using std::chrono::system_clock;
+    typedef unsigned long long ULL;
+    typedef unsigned long long ull;
+    typedef unsigned int UINT;
+    typedef unsigned int uint;
+    typedef void (*TEST_FUNCTION)(void); // function pointer type
+    #ifdef TUPLE_CONTROL
+        typedef std::tuple<TEST_FUNCTION, bool> TEST_CONTROL;
+    #else
+        typedef std::pair<TEST_FUNCTION, bool> TEST_CONTROL;
+    #endif
+    typedef std::unordered_map<std::string, TEST_CONTROL> TEST_CONTROL_MAP;
+    enum OS_ENVIRONMENTS{LINUX, WIN_32, WIN_64, APPLE, ANDROID, AKAROS, NACL, ASMJC, FUSCHIA};
+    enum COMPILERS{GCC, MSVC, MINGW32, MINGW32W, MINGW64, CLANG, EMSCRIPTEN};
+//    struct configurations;
+//    extern configurations parameter_container;
+//    extern configurations *configurations_h; //= &parameter_container;
+//    extern configurations *configurations_d;
+//    typedef std::tuple<configurations, std::string, PARAM_TYPES> PCT_PARAMS;
+#endif
 //------------------------------------------------------------------------------------------------//
 //------------------------------ Detect Operating System environment -----------------------------//
 //------------------------------------------------------------------------------------------------//
@@ -135,58 +169,8 @@
 //	// we are compiling for a 32-bit system
 //#else
 //	// we are compiling for a 64-bit system
-//#endif/------------------------------------------------------------------------------------------------//
-//------------------------------------ OS/compiler dependencies ----------------------------------//
-//------------------------------------------------------------------------------------------------//
-#if defined(_WIN32) || defined(_WIN64)
-	//#include "Shlwapi.h"
-	//#include <windows.h>
-	#include "getopt.h"
-#else
-	#include <initializer_list>
-    #include <getopt.h>
-	#include <unistd.h>
-
-#endif
-//-----------------------------------------------------------------------------------------------------------------
-#ifndef GLOBALS
-#define GLOBALS
-	//using namespace std;
-    using std::cin;
-    using std::cout;
-    using std::endl;
-    using std::chrono::system_clock;
-    typedef unsigned long long ULL;
-    typedef unsigned long long ull;
-    typedef unsigned int UINT;
-    typedef unsigned int uint;
-    typedef void (*TEST_FUNCTION)(void); // function pointer type
-    #ifdef TUPLE_CONTROL
-        typedef std::tuple<TEST_FUNCTION, bool> TEST_CONTROL;
-    #else
-        typedef std::pair<TEST_FUNCTION, bool> TEST_CONTROL;
-    #endif
-    typedef std::unordered_map<std::string, TEST_CONTROL> TEST_CONTROL_MAP;
-//    char __print_statement[512];
-//    char __system_command[512];
-//    char __ls_cmd_win[] = "dir -/b /a:d";
-//    char __ls_cmd_linux[] = "find -maxdepth 1 -type d -printf \"%f\n\"";
-//    char __folder[512];
-//    char __filename[512];
-//    char __csvfile[512];
-//    char __textfile[512];
-//    int __i = 0;
-//    std::ifstream __input_file;
-//    std::ofstream __output_file;
-//    std::string __termout;
-//    std::string		__line__input;
-//    std::string __input_value;
-//    std::string __string;
-//    std::string __outstring;
-//    std::stringstream  __line_sstream;
-//    std::vector<std::string> strcat_elements;
-#endif
-
+//#endif
+//-----------------------------------------------------------------------------------------------------------------//
 #define ON						(0==0)									// [T/F] Definition of boolean "ON" as equivalent to 'true'
 #define OFF						(!ON)									// [T/F] Definition of boolean "OFF" as equivalent to 'false' (technically 'not true')
 #define START					true									// [T/F] Used as an alias for true for starting timer
@@ -204,5 +188,4 @@
 #define pCT_block_ordering		"pCT_block_ordering"
 #define pCT_slice_merging		"pCT_slice_merging"
 #define TV_CSV_to_TXT			"TV_CSV_to_TXT"
-
-//#endif // DIRECTIVES_H_INCLUDED
+//-----------------------------------------------------------------------------------------------------------------//
